@@ -1,0 +1,64 @@
+import { ArrowLeft, CircleHelp, Settings as SettingsIcon } from "lucide-react"
+import { SETTING_ITEMS } from "@/lib/currency-data"
+import type { Settings } from "@/lib/currency"
+
+type SettingsViewProps = {
+  settings: Settings
+  onToggle: (key: keyof Settings) => void
+  onBack: () => void
+}
+
+export function SettingsView({
+  settings,
+  onToggle,
+  onBack,
+}: SettingsViewProps) {
+  return (
+    <section className="detail-view settings-view">
+      <div className="detail-topline">
+        <button type="button" className="back-button" onClick={onBack}>
+          <ArrowLeft size={16} /> Converter
+        </button>
+        <span>Preferences · local only</span>
+      </div>
+      <div className="detail-heading">
+        <h1>Settings</h1>
+        <p className="detail-intro">
+          Choose how amounts appear. Your preferences stay in this browser.
+        </p>
+      </div>
+      <div className="settings-card">
+        <div className="settings-card-head">
+          <div>
+            <span className="settings-icon">
+              <SettingsIcon size={18} />
+            </span>
+            <h2>Display & memory</h2>
+          </div>
+          <span className="settings-count">03 options</span>
+        </div>
+        {SETTING_ITEMS.map((item) => (
+          <label className="setting-row" key={item.key}>
+            <span>
+              <strong>{item.title}</strong>
+              <small>{item.detail}</small>
+            </span>
+            <input
+              type="checkbox"
+              checked={settings[item.key]}
+              onChange={() => onToggle(item.key)}
+            />
+            <span className="toggle" />
+          </label>
+        ))}
+        <div className="settings-note">
+          <CircleHelp size={15} />
+          <span>
+            Rates come from Frankfurter’s reference sources. Amounts are never
+            sent with the request.
+          </span>
+        </div>
+      </div>
+    </section>
+  )
+}

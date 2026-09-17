@@ -1,21 +1,22 @@
-# Next.js template
+# calcurrency
 
-This is a Next.js template with shadcn/ui.
+A currency converter with live reference rates from Frankfurter and a local fallback when rates are unavailable.
 
-## Adding components
-
-To add components to your app, run the following command:
+## Development
 
 ```bash
-npx shadcn@latest add button
+pnpm install
+pnpm dev
 ```
 
-This will place the ui components in the `components` directory.
+The app uses Next.js 16. Currency data is fetched by `app/api/rates/route.ts`. Converter state and browser preferences live in `components/converter` and `hooks`; static fallback data lives in `lib/currency-data.ts`.
 
-## Using components
+## Checks
 
-To use the components in your app, import them as follows:
-
-```tsx
-import { Button } from "@/components/ui/button";
+```bash
+pnpm typecheck
+pnpm lint
+pnpm test
 ```
+
+Run `pnpm build` before a deployment.
