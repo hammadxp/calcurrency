@@ -1,4 +1,5 @@
 import { ArrowLeft, CircleHelp, Settings as SettingsIcon } from "lucide-react"
+import { SettingRow } from "@/components/converter/setting-row"
 import { SETTING_ITEMS } from "@/lib/currency-data"
 import type { Settings } from "@/lib/currency"
 
@@ -38,18 +39,12 @@ export function SettingsView({
           <span className="settings-count">03 options</span>
         </div>
         {SETTING_ITEMS.map((item) => (
-          <label className="setting-row" key={item.key}>
-            <span>
-              <strong>{item.title}</strong>
-              <small>{item.detail}</small>
-            </span>
-            <input
-              type="checkbox"
-              checked={settings[item.key]}
-              onChange={() => onToggle(item.key)}
-            />
-            <span className="toggle" />
-          </label>
+          <SettingRow
+            key={item.key}
+            setting={item}
+            checked={settings[item.key]}
+            onToggle={onToggle}
+          />
         ))}
         <div className="settings-note">
           <CircleHelp size={15} />

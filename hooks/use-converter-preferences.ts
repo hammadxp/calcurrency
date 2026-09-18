@@ -85,6 +85,7 @@ let snapshot = JSON.stringify(current)
 function getSnapshot() {
   return snapshot
 }
+
 function getServerSnapshot() {
   return serverSnapshot
 }

@@ -1,8 +1,8 @@
 "use client"
 
 import { useId, useRef, useState } from "react"
-import { Check, Search, X } from "lucide-react"
-import { FlagIcon } from "@/components/converter/flag-icon"
+import { Search, X } from "lucide-react"
+import { CurrencyOption } from "@/components/converter/currency-option"
 import { useModalFocus } from "@/hooks/use-modal-focus"
 import type { Currency, Slot } from "@/lib/currency"
 
@@ -80,25 +80,14 @@ export function CurrencyPicker({
           <kbd>esc</kbd>
         </label>
         <div className="currency-list">
-          {filtered.map((currency) => {
-            const isSelected = currency.code === selectedCode
-            return (
-              <button
-                type="button"
-                className={`currency-option ${isSelected ? "selected" : ""}`}
-                key={currency.code}
-                onClick={() => onSelect(currency.code)}
-                aria-pressed={isSelected}
-              >
-                <FlagIcon currency={currency} size="small" />
-                <span className="option-name">
-                  <strong>{currency.code}</strong>
-                  <small>{currency.name}</small>
-                </span>
-                {isSelected ? <Check size={17} /> : null}
-              </button>
-            )
-          })}
+          {filtered.map((currency) => (
+            <CurrencyOption
+              key={currency.code}
+              currency={currency}
+              selected={currency.code === selectedCode}
+              onSelect={onSelect}
+            />
+          ))}
           {filtered.length === 0 ? (
             <p className="px-6 py-4 text-sm text-[var(--muted)]">
               No currencies found.

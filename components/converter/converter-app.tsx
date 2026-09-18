@@ -1,13 +1,13 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 import { AppHeader } from "@/components/converter/app-header"
-import { CurrencyPanel } from "@/components/converter/currency-panel"
 import { CurrencyPicker } from "@/components/converter/currency-picker"
+import { ConverterView } from "@/components/converter/converter-view"
 import { DonateDialog } from "@/components/converter/donate-dialog"
-import { MobileKeypad } from "@/components/converter/mobile-keypad"
 import { RatesView } from "@/components/converter/rates-view"
 import { SettingsView } from "@/components/converter/settings-view"
+import { useAmountKeyboard } from "@/hooks/use-amount-keyboard"
 import { useConverterPreferences } from "@/hooks/use-converter-preferences"
 import { useRates } from "@/hooks/use-rates"
 import {
@@ -38,32 +38,10 @@ export function ConverterApp() {
   const closePicker = useCallback(() => setPicker(null), [])
   const closeDonate = useCallback(() => setDonateOpen(false), [])
 
-  useEffect(() => {
-    if (view !== "convert" || picker || donateOpen) return
-    function typeIntoAmount(event: KeyboardEvent) {
-      const target = event.target
-      if (
-        event.defaultPrevented ||
-        event.ctrlKey ||
-        event.metaKey ||
-        event.altKey ||
-        (target instanceof HTMLElement &&
-          (target.isContentEditable ||
-            ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)))
-      )
-        return
-      if (/^\d$/.test(event.key) || event.key === ".") {
-        setAmount((current) => normalizeAmount(current + event.key))
-      } else if (event.key === "Backspace") {
-        setAmount((current) => current.slice(0, -1))
-      } else if (event.key === "Escape") {
-        setAmount("")
-      } else return
-      event.preventDefault()
-    }
-    window.addEventListener("keydown", typeIntoAmount)
-    return () => window.removeEventListener("keydown", typeIntoAmount)
-  }, [view, picker, donateOpen, setAmount])
+  useAmountKeyboard({
+    enabled: view === "convert" && !picker && !donateOpen,
+    setAmount,
+  })
 
   function enterKey(key: string) {
     setAmount((current) =>
@@ -105,28 +83,18 @@ export function ConverterApp() {
         }}
       />
       {view === "convert" ? (
-        <section className="converter-view" aria-label="Currency converter">
-          <div className="currency-stack">
-            <CurrencyPanel
-              currency={from}
-              role="source"
-              amount={amount}
-              settings={settings}
-              onOpen={() => setPicker("from")}
-              onChange={setAmount}
-            />
-            <CurrencyPanel
-              currency={to}
-              role="target"
-              converted={converted}
-              from={from}
-              pairRate={pairRate}
-              settings={settings}
-              onOpen={() => setPicker("to")}
-            />
-          </div>
-          <MobileKeypad onKey={enterKey} />
-        </section>
+        <ConverterView
+          from={from}
+          to={to}
+          amount={amount}
+          converted={converted}
+          pairRate={pairRate}
+          settings={settings}
+          onAmountChange={setAmount}
+          onOpenFrom={() => setPicker("from")}
+          onOpenTo={() => setPicker("to")}
+          onKey={enterKey}
+        />
       ) : null}
       {view === "rates" ? (
         <RatesView

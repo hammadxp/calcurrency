@@ -1,5 +1,5 @@
 import { ArrowLeft } from "lucide-react"
-import { FlagIcon } from "@/components/converter/flag-icon"
+import { RateRow } from "@/components/converter/rate-row"
 import { formatRate, type Currency } from "@/lib/currency"
 
 type RatesViewProps = {
@@ -50,18 +50,11 @@ export function RatesView({
       </div>
       <div className="rate-table">
         {currencies.map((currency) => (
-          <div className="rate-row" key={currency.code}>
-            <span className="table-identity">
-              <FlagIcon currency={currency} size="small" />
-              <span className="table-currency">
-                <strong>{currency.code}</strong>
-                <small>{currency.name}</small>
-              </span>
-            </span>
-            <span className="table-value">
-              {formatRate(rates[currency.code])}
-            </span>
-          </div>
+          <RateRow
+            key={currency.code}
+            currency={currency}
+            rate={rates[currency.code]}
+          />
         ))}
       </div>
     </section>
