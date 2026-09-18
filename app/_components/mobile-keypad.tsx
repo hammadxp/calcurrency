@@ -1,5 +1,5 @@
 import { Delete } from "lucide-react"
-import { KEYPAD_KEYS } from "@/lib/currency-data"
+import { KEYPAD_KEYS } from "@/config/constants"
 
 type MobileKeypadProps = { onKey: (key: string) => void }
 

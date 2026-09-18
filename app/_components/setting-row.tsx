@@ -1,4 +1,4 @@
-import type { Settings } from "@/lib/currency"
+import type { Settings } from "@/types/currency"
 
 type SettingRowProps = {
   setting: {

@@ -1,6 +1,6 @@
-import { CurrencyPanel } from "@/components/converter/currency-panel"
-import { MobileKeypad } from "@/components/converter/mobile-keypad"
-import type { Currency, Settings } from "@/lib/currency"
+import { CurrencyPanel } from "./currency-panel"
+import { MobileKeypad } from "./mobile-keypad"
+import type { Currency, Settings } from "@/types/currency"
 
 type ConverterViewProps = {
   from: Currency | null

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, type Dispatch, type SetStateAction } from "react"
-import { normalizeAmount } from "@/lib/currency"
+import { normalizeAmount } from "@/utils/currency"
 
 type UseAmountKeyboardOptions = {
   enabled: boolean

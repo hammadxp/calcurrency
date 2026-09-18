@@ -1,6 +1,7 @@
-import { CurrencyAmount } from "@/components/converter/currency-amount"
-import { CurrencyControl } from "@/components/converter/currency-control"
-import type { Currency, Settings } from "@/lib/currency"
+import { CurrencyAmount } from "./currency-amount"
+import { CurrencyControl } from "./currency-control"
+import { cn } from "@/lib/utils"
+import type { Currency, Settings } from "@/types/currency"
 
 type CurrencyPanelProps = {
   currency: Currency | null
@@ -27,7 +28,10 @@ export function CurrencyPanel({
 }: CurrencyPanelProps) {
   return (
     <article
-      className={`currency-panel ${role === "source" ? "source-panel" : "target-panel"}`}
+      className={cn(
+        "currency-panel",
+        role === "source" ? "source-panel" : "target-panel"
+      )}
     >
       <div className="panel-main">
         <CurrencyControl

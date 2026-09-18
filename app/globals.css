@@ -13,12 +13,35 @@
   --muted: oklch(0.5979 0.0176 160.3);
   --line: oklch(0.8797 0.0129 126.4);
   --green: oklch(0.5099 0.094 157.1);
+  --green-surface: oklch(0.5099 0.094 157.1);
+  --on-green: oklch(0.9967 0.0054 95.1);
   --green-deep: oklch(0.4359 0.0842 156.7);
   --green-soft: oklch(0.9164 0.0227 151.6);
   --coral: oklch(0.645 0.1453 34);
   --coral-soft: oklch(0.8517 0.0575 37.2);
+  --header-bg: oklch(0.243 0.0194 167.2);
+  --header-fg: oklch(0.9547 0.0095 93.6);
   --font-mono:
     "Roboto Mono", "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+}
+
+.dark {
+  --ink: oklch(0.939 0.014 150);
+  --ink-soft: oklch(0.763 0.019 151);
+  --paper: oklch(0.19 0.014 161);
+  --paper-deep: oklch(0.255 0.019 159);
+  --white: oklch(0.227 0.017 160);
+  --muted: oklch(0.737 0.018 154);
+  --line: oklch(0.38 0.022 157);
+  --green: oklch(0.746 0.12 156);
+  --green-surface: oklch(0.33 0.071 157);
+  --on-green: oklch(0.939 0.014 150);
+  --green-deep: oklch(0.4359 0.0842 156.7);
+  --green-soft: oklch(0.297 0.036 155);
+  --coral: oklch(0.747 0.134 35);
+  --coral-soft: oklch(0.337 0.052 33);
+  --header-bg: oklch(0.145 0.014 161);
+  --header-fg: oklch(0.939 0.014 150);
 }
 
 * {
@@ -58,15 +81,15 @@ input:focus-visible {
   align-items: center;
   gap: 22px;
   padding: 0 36px;
-  color: var(--paper);
-  background: var(--ink);
+  color: var(--header-fg);
+  background: var(--header-bg);
 }
 .brand-mark {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 0;
-  color: var(--paper);
+  color: var(--header-fg);
   background: transparent;
   border: 0;
   font: 800 16px/1 var(--font-mono);
@@ -113,6 +136,9 @@ input:focus-visible {
   color: var(--coral-soft);
   border-color: oklch(0.4405 0.0492 35.4);
 }
+.dark .donate-button {
+  color: var(--coral);
+}
 .donate-button:hover {
   color: var(--ink);
   background: var(--coral-soft);
@@ -122,7 +148,7 @@ input:focus-visible {
   display: none;
   margin-left: auto;
   padding: 8px;
-  color: var(--paper);
+  color: var(--header-fg);
   background: transparent;
   border: 1px solid oklch(0.485 0.0271 160.9);
   border-radius: 5px;
@@ -155,7 +181,7 @@ input:focus-visible {
 }
 .target-panel {
   color: oklch(0.9809 0.0118 145.5);
-  background: var(--green);
+  background: var(--green-surface);
 }
 .panel-main {
   min-height: 0;
@@ -327,7 +353,15 @@ input:focus-visible {
   font-size: 25px;
   letter-spacing: -0.08em;
 }
-.picker-kicker,
+.picker-kicker {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 .close-button {
   display: grid;
   place-items: center;
@@ -377,6 +411,11 @@ input:focus-visible {
   max-height: 410px;
   overflow: auto;
   padding: 0 20px 8px;
+}
+.picker-empty {
+  padding: 16px 24px;
+  color: var(--muted);
+  font-size: 13px;
 }
 .currency-option {
   display: flex;
@@ -823,6 +862,10 @@ input:focus-visible {
   background: var(--coral);
   border-radius: 7px;
 }
+.dark .brand-icon,
+.dark .donate-icon {
+  color: var(--paper);
+}
 .mobile-status,
 .mobile-keypad {
   display: none;
@@ -1040,8 +1083,8 @@ input.amount-number:focus-visible {
   max-width: 1180px;
   margin: 34px auto 0;
   padding: 20px 24px;
-  color: var(--white);
-  background: var(--green);
+  color: var(--on-green);
+  background: var(--green-surface);
   border-radius: 9px;
   font-size: 16px;
 }

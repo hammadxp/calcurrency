@@ -1,5 +1,6 @@
-import { FlagIcon } from "@/components/converter/flag-icon"
-import { formatRate, type Currency } from "@/lib/currency"
+import { FlagIcon } from "./flag-icon"
+import type { Currency } from "@/types/currency"
+import { formatRate } from "@/utils/currency"
 
 type RateRowProps = {
   currency: Currency

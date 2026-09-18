@@ -1,7 +1,7 @@
 import { ArrowLeft, CircleHelp, Settings as SettingsIcon } from "lucide-react"
-import { SettingRow } from "@/components/converter/setting-row"
-import { SETTING_ITEMS } from "@/lib/currency-data"
-import type { Settings } from "@/lib/currency"
+import { SettingRow } from "./setting-row"
+import { SETTING_ITEMS } from "@/data/currency"
+import type { Settings } from "@/types/currency"
 
 type SettingsViewProps = {
   settings: Settings

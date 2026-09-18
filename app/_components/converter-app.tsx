@@ -1,21 +1,17 @@
 "use client"
 
 import { useCallback, useState } from "react"
-import { AppHeader } from "@/components/converter/app-header"
-import { CurrencyPicker } from "@/components/converter/currency-picker"
-import { ConverterView } from "@/components/converter/converter-view"
-import { DonateDialog } from "@/components/converter/donate-dialog"
-import { RatesView } from "@/components/converter/rates-view"
-import { SettingsView } from "@/components/converter/settings-view"
+import { AppHeader } from "./app-header"
+import { CurrencyPicker } from "./currency-picker"
+import { ConverterView } from "./converter-view"
+import { DonateDialog } from "./donate-dialog"
+import { RatesView } from "./rates-view"
+import { SettingsView } from "./settings-view"
 import { useAmountKeyboard } from "@/hooks/use-amount-keyboard"
 import { useConverterPreferences } from "@/hooks/use-converter-preferences"
 import { useRates } from "@/hooks/use-rates"
-import {
-  normalizeAmount,
-  type Settings,
-  type Slot,
-  type View,
-} from "@/lib/currency"
+import type { Settings, Slot, View } from "@/types/currency"
+import { normalizeAmount } from "@/utils/currency"
 
 export function ConverterApp() {
   const [view, setView] = useState<View>("convert")

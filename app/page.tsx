@@ -1,4 +1,4 @@
-import { ConverterApp } from "@/components/converter/converter-app"
+import { ConverterApp } from "./_components/converter-app"
 
 export default function Page() {
   return <ConverterApp />

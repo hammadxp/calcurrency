@@ -2,9 +2,9 @@
 
 import { useId, useRef, useState } from "react"
 import { Search, X } from "lucide-react"
-import { CurrencyOption } from "@/components/converter/currency-option"
+import { CurrencyOption } from "./currency-option"
 import { useModalFocus } from "@/hooks/use-modal-focus"
-import type { Currency, Slot } from "@/lib/currency"
+import type { Currency, Slot } from "@/types/currency"
 
 type CurrencyPickerProps = {
   slot: Slot
@@ -89,9 +89,7 @@ export function CurrencyPicker({
             />
           ))}
           {filtered.length === 0 ? (
-            <p className="px-6 py-4 text-sm text-[var(--muted)]">
-              No currencies found.
-            </p>
+            <p className="picker-empty">No currencies found.</p>
           ) : null}
         </div>
         <div className="picker-footer">

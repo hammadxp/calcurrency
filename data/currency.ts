@@ -1,4 +1,4 @@
-import type { Currency } from "@/lib/currency"
+import type { Currency } from "@/types/currency"
 
 export const FALLBACK_CURRENCIES: Currency[] = [
   { code: "USD", name: "US Dollar", symbol: "$", flag: "us" },
@@ -49,6 +49,11 @@ export const FLAG_OVERRIDES: Record<string, string> = {
   XCD: "",
   XPF: "",
   XDR: "",
+  XAU: "",
+  XAG: "",
+  XPD: "",
+  XPT: "",
+  XCG: "cw",
   ANG: "cw",
   BOV: "bo",
   CLF: "cl",
@@ -60,21 +65,6 @@ export const FLAG_OVERRIDES: Record<string, string> = {
   VED: "ve",
   ZWG: "zw",
 }
-
-export const KEYPAD_KEYS = [
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  ".",
-  "0",
-  "delete",
-] as const
 
 export const SETTING_ITEMS = [
   {

@@ -1,6 +1,7 @@
 import { ArrowLeft } from "lucide-react"
-import { RateRow } from "@/components/converter/rate-row"
-import { formatRate, type Currency } from "@/lib/currency"
+import { RateRow } from "./rate-row"
+import type { Currency } from "@/types/currency"
+import { formatRate } from "@/utils/currency"
 
 type RatesViewProps = {
   from: Currency | null

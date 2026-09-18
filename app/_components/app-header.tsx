@@ -1,5 +1,6 @@
 import { ArrowLeftRight, Heart, Menu, Settings, TrendingUp } from "lucide-react"
-import type { View } from "@/lib/currency"
+import { cn } from "@/lib/utils"
+import type { View } from "@/types/currency"
 
 type AppHeaderProps = {
   view: View
@@ -36,7 +37,7 @@ export function AppHeader({
         {status}
       </div>
       <nav
-        className={`nav-actions ${mobileNavOpen ? "nav-open" : ""}`}
+        className={cn("nav-actions", mobileNavOpen && "nav-open")}
         aria-label="Main navigation"
       >
         <div className="mobile-status">
@@ -52,7 +53,7 @@ export function AppHeader({
         </button>
         <button
           type="button"
-          className={`nav-button ${view === "rates" ? "active" : ""}`}
+          className={cn("nav-button", view === "rates" && "active")}
           onClick={() => onView("rates")}
           aria-current={view === "rates" ? "page" : undefined}
         >
@@ -60,7 +61,7 @@ export function AppHeader({
         </button>
         <button
           type="button"
-          className={`nav-button ${view === "settings" ? "active" : ""}`}
+          className={cn("nav-button", view === "settings" && "active")}
           onClick={() => onView("settings")}
           aria-current={view === "settings" ? "page" : undefined}
         >

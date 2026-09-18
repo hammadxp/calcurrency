@@ -1,6 +1,7 @@
 import { Check } from "lucide-react"
-import { FlagIcon } from "@/components/converter/flag-icon"
-import type { Currency } from "@/lib/currency"
+import { cn } from "@/lib/utils"
+import { FlagIcon } from "./flag-icon"
+import type { Currency } from "@/types/currency"
 
 type CurrencyOptionProps = {
   currency: Currency
@@ -16,7 +17,7 @@ export function CurrencyOption({
   return (
     <button
       type="button"
-      className={`currency-option ${selected ? "selected" : ""}`}
+      className={cn("currency-option", selected && "selected")}
       onClick={() => onSelect(currency.code)}
       aria-pressed={selected}
     >

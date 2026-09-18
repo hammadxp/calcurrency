@@ -1,6 +1,8 @@
 import { ChevronDown } from "lucide-react"
-import { FlagIcon } from "@/components/converter/flag-icon"
-import { formatRate, type Currency } from "@/lib/currency"
+import { cn } from "@/lib/utils"
+import { FlagIcon } from "./flag-icon"
+import type { Currency } from "@/types/currency"
+import { formatRate } from "@/utils/currency"
 
 type CurrencyControlProps = {
   currency: Currency | null
@@ -19,7 +21,7 @@ export function CurrencyControl({
 }: CurrencyControlProps) {
   return (
     <div
-      className={`currency-control ${currency ? "" : "currency-control-empty"}`}
+      className={cn("currency-control", !currency && "currency-control-empty")}
     >
       <button
         type="button"

@@ -1,17 +1,14 @@
 import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google"
-import type { Metadata } from "next"
 import type { ReactNode } from "react"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { siteMetadata } from "@/config/metadata"
 import { cn } from "@/lib/utils"
 
 type RootLayoutProps = Readonly<{ children: ReactNode }>
 
-export const metadata: Metadata = {
-  title: "calcurrency · clear conversion",
-  description: "A fast, clear currency converter with live reference rates.",
-}
+export const metadata = siteMetadata
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 

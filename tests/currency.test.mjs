@@ -2,10 +2,11 @@ import assert from "node:assert/strict"
 import test from "node:test"
 import {
   formatAmount,
+  formatRateDate,
   formatRate,
   isRateData,
   normalizeAmount,
-} from "../lib/currency.ts"
+} from "../utils/currency.ts"
 
 const settings = { decimals: true, compact: false, remember: true }
 
@@ -33,6 +34,10 @@ test("reference rates retain useful precision regardless of amount settings", ()
   assert.equal(formatRate(0), "—")
 })
 
+test("provider date is displayed without a local timezone shift", () => {
+  assert.equal(formatRateDate("2026-09-17"), "Sep 17, 2026")
+})
+
 test("cached rates require matching currencies and positive rates", () => {
   const valid = {
     rates: { USD: 1, EUR: 0.9 },
@@ -41,6 +46,7 @@ test("cached rates require matching currencies and positive rates", () => {
   }
   assert.equal(isRateData(valid), true)
   assert.equal(isRateData({ ...valid, rates: { USD: 1, EUR: -2 } }), false)
+  assert.equal(isRateData({ ...valid, rates: { USD: 2, EUR: 0.9 } }), false)
   assert.equal(
     isRateData({
       ...valid,
@@ -49,4 +55,12 @@ test("cached rates require matching currencies and positive rates", () => {
     false
   )
   assert.equal(isRateData({ ...valid, refreshedAt: "bad date" }), false)
+  assert.equal(isRateData({ ...valid, rateDate: "bad date" }), false)
+  assert.equal(
+    isRateData({
+      ...valid,
+      currencies: [{ code: "EUR", name: "Euro", symbol: "€", flag: "../../" }],
+    }),
+    false
+  )
 })

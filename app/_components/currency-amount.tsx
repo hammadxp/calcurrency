@@ -1,9 +1,5 @@
-import {
-  formatAmount,
-  normalizeAmount,
-  type Currency,
-  type Settings,
-} from "@/lib/currency"
+import type { Currency, Settings } from "@/types/currency"
+import { formatAmount, normalizeAmount } from "@/utils/currency"
 
 type CurrencyAmountProps = {
   currency: Currency

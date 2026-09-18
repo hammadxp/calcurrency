@@ -1,11 +1,9 @@
 "use client"
 
 import { useSyncExternalStore, type SetStateAction } from "react"
-import {
-  DEFAULT_SETTINGS,
-  normalizeAmount,
-  type Settings,
-} from "@/lib/currency"
+import { DEFAULT_SETTINGS } from "@/config/constants"
+import type { Settings } from "@/types/currency"
+import { normalizeAmount } from "@/utils/currency"
 
 const PAIR_KEY = "calcurrency-selected-currencies"
 const AMOUNT_KEY = "calcurrency-amount"

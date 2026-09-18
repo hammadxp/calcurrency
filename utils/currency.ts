@@ -1,27 +1,4 @@
-export type Currency = {
-  code: string
-  name: string
-  symbol: string
-  flag?: string
-}
-export type Slot = "from" | "to"
-export type View = "convert" | "rates" | "settings"
-export type Settings = {
-  decimals: boolean
-  compact: boolean
-  remember: boolean
-}
-export type RateData = {
-  rates: Record<string, number>
-  currencies: Currency[]
-  refreshedAt: string
-}
-
-export const DEFAULT_SETTINGS: Settings = {
-  decimals: true,
-  compact: false,
-  remember: true,
-}
+import type { RateData, Settings } from "@/types/currency"
 
 export function formatAmount(
   value: number,
@@ -61,6 +38,18 @@ export function formatRefreshTime(value: string) {
   }).format(date)
 }
 
+export function formatRateDate(value: string) {
+  const date = new Date(`${value}T00:00:00Z`)
+  if (Number.isNaN(date.getTime())) return "unknown date"
+
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(date)
+}
+
 export function normalizeAmount(value: string) {
   const digits = value.replace(/[^\d.]/g, "")
   const dot = digits.indexOf(".")
@@ -79,18 +68,26 @@ export function isRateData(value: unknown): value is RateData {
     Object.values(data.rates).every(
       (rate) => typeof rate === "number" && Number.isFinite(rate) && rate > 0
     ) &&
-    !!data.rates.USD &&
+    data.rates.USD === 1 &&
     Array.isArray(data.currencies) &&
     data.currencies.length > 0 &&
     data.currencies.every(
       (currency) =>
         currency &&
         typeof currency.code === "string" &&
+        /^[A-Z]{3}$/.test(currency.code) &&
         typeof currency.name === "string" &&
         typeof currency.symbol === "string" &&
+        (currency.flag === undefined ||
+          (typeof currency.flag === "string" &&
+            /^(?:[a-z]{2})?$/.test(currency.flag))) &&
         data.rates?.[currency.code] !== undefined
     ) &&
     typeof data.refreshedAt === "string" &&
-    !Number.isNaN(Date.parse(data.refreshedAt))
+    !Number.isNaN(Date.parse(data.refreshedAt)) &&
+    (data.rateDate === undefined ||
+      (typeof data.rateDate === "string" &&
+        /^\d{4}-\d{2}-\d{2}$/.test(data.rateDate) &&
+        !Number.isNaN(Date.parse(data.rateDate))))
   )
 }

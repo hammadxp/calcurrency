@@ -9,7 +9,7 @@ pnpm install
 pnpm dev
 ```
 
-The app uses Next.js 16. Currency data is fetched by `app/api/rates/route.ts`. Converter state and browser preferences live in `components/converter` and `hooks`; static fallback data lives in `lib/currency-data.ts`.
+The app uses Next.js 16. The converter UI lives in `app/_components`, while browser preferences and rate loading live in `hooks`. The rates API uses `queries/currency-rates.ts`; sample fallback rates and currency names live in `data/currency.ts`.
 
 ## Checks
 
@@ -17,6 +17,7 @@ The app uses Next.js 16. Currency data is fetched by `app/api/rates/route.ts`. C
 pnpm typecheck
 pnpm lint
 pnpm test
+pnpm format:check
 ```
 
 Run `pnpm build` before a deployment.

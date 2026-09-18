@@ -5,22 +5,11 @@ import {
   FALLBACK_CURRENCIES,
   FALLBACK_RATES,
   FLAG_OVERRIDES,
-} from "@/lib/currency-data"
-import {
-  formatRefreshTime,
-  isRateData,
-  type Currency,
-  type RateData,
-} from "@/lib/currency"
+} from "@/data/currency"
+import { formatRateDate, formatRefreshTime, isRateData } from "@/utils/currency"
+import type { RateData } from "@/types/currency"
 
 const CACHE_KEY = "calcurrency-rates"
-
-type RatesResponse = {
-  rates?: Record<string, number>
-  currencies?: Currency[]
-  refreshedAt?: string | null
-  live?: boolean
-}
 
 function subscribe(listener: () => void) {
   function onStorage(event: StorageEvent) {
@@ -67,20 +56,22 @@ export function useRates() {
           signal: controller.signal,
         })
         if (!response.ok) throw new Error("Could not load rates")
-        const payload = (await response.json()) as RatesResponse
-        if (!payload.live || !payload.currencies || !payload.refreshedAt)
+        const payload: unknown = await response.json()
+        if (
+          !isRateData(payload) ||
+          !("live" in payload) ||
+          payload.live !== true
+        )
           throw new Error("No live rates")
-        const next: unknown = {
-          rates: payload.rates,
+        const next: RateData = {
+          ...payload,
           currencies: payload.currencies.map((currency) => ({
             ...currency,
             flag:
               FLAG_OVERRIDES[currency.code] ??
               currency.code.slice(0, 2).toLowerCase(),
           })),
-          refreshedAt: payload.refreshedAt,
         }
-        if (!isRateData(next)) throw new Error("Invalid rate data")
         if (controller.signal.aborted) return
         setLive(next)
         try {
@@ -100,10 +91,14 @@ export function useRates() {
   return {
     rates: data?.rates ?? FALLBACK_RATES,
     currencies: data?.currencies ?? FALLBACK_CURRENCIES,
-    status: data
-      ? `Last refreshed ${formatRefreshTime(data.refreshedAt)}`
-      : failed
-        ? "Rates awaiting refresh"
-        : "Checking rates",
+    status: live
+      ? live.rateDate
+        ? `Rates dated ${formatRateDate(live.rateDate)}`
+        : `Last refreshed ${formatRefreshTime(live.refreshedAt)}`
+      : cached
+        ? `Saved rates from ${formatRateDate(cached.rateDate ?? cached.refreshedAt.slice(0, 10))}`
+        : failed
+          ? "Offline sample rates · verify before use"
+          : "Checking rates · showing sample rates",
   }
 }
