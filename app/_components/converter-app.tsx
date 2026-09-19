@@ -66,7 +66,7 @@ export function ConverterApp() {
   }
 
   return (
-    <main className="app-shell">
+    <main className="min-h-svh bg-stone-50 dark:bg-slate-950">
       <AppHeader
         view={view}
         status={status}

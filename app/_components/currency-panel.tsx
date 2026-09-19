@@ -29,11 +29,18 @@ export function CurrencyPanel({
   return (
     <article
       className={cn(
-        "currency-panel",
-        role === "source" ? "source-panel" : "target-panel"
+        "flex min-h-0 flex-col justify-center p-[clamp(28px,5vh,64px)_clamp(24px,6vw,100px)_clamp(24px,4vh,48px)] max-[760px]:p-[11px_16px] max-[360px]:px-2.5",
+        role === "source"
+          ? "bg-stone-50 dark:bg-slate-900"
+          : "bg-emerald-600 text-emerald-50 dark:bg-emerald-800"
       )}
     >
-      <div className="panel-main">
+      <div
+        className={cn(
+          "grid min-h-0 w-full grid-cols-[minmax(200px,30%)_minmax(0,1fr)] items-center gap-[clamp(22px,5vw,90px)] max-[760px]:flex max-[760px]:flex-col max-[760px]:items-stretch max-[760px]:justify-center max-[760px]:gap-3",
+          !currency && "flex justify-center"
+        )}
+      >
         <CurrencyControl
           currency={currency}
           role={role}

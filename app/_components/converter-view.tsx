@@ -28,8 +28,11 @@ export function ConverterView({
   onKey,
 }: ConverterViewProps) {
   return (
-    <section className="converter-view" aria-label="Currency converter">
-      <div className="currency-stack">
+    <section
+      className="flex h-[calc(100svh-70px)] min-h-0 flex-col overflow-hidden max-[760px]:grid max-[760px]:h-[calc(100svh-58px)] max-[760px]:grid-rows-[minmax(0,1fr)_auto]"
+      aria-label="Currency converter"
+    >
+      <div className="grid h-full min-h-0 w-full flex-1 grid-rows-[minmax(0,1fr)_minmax(0,1fr)] self-center">
         <CurrencyPanel
           currency={from}
           role="source"
