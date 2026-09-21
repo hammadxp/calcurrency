@@ -14,9 +14,9 @@ export function FlagIcon({ currency, size = "medium" }: FlagIconProps) {
           ? "h-[18px] w-auto max-w-6 max-[760px]:h-[18px]"
           : "h-[46px] w-[86px] max-w-[86px] max-[760px]:h-[34px] max-[760px]:w-16 max-[760px]:max-w-16"
       )}
-      src={`https://flagcdn.com/w80/${currency.flag}.png`}
-      width={80}
-      height={60}
+      src={`https://flagcdn.com/w320/${currency.flag}.png`}
+      width={320}
+      height={240}
       alt=""
       aria-hidden="true"
     />

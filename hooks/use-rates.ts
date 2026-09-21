@@ -49,12 +49,11 @@ export function useRates() {
   const [failed, setFailed] = useState(false)
 
   useEffect(() => {
-    const controller = new AbortController()
+    let isActive = true
+
     async function loadRates() {
       try {
-        const response = await fetch("/api/rates", {
-          signal: controller.signal,
-        })
+        const response = await fetch("/api/rates")
         if (!response.ok) throw new Error("Could not load rates")
         const payload: unknown = await response.json()
         if (
@@ -72,7 +71,7 @@ export function useRates() {
               currency.code.slice(0, 2).toLowerCase(),
           })),
         }
-        if (controller.signal.aborted) return
+        if (!isActive) return
         setLive(next)
         try {
           window.localStorage.setItem(CACHE_KEY, JSON.stringify(next))
@@ -80,11 +79,14 @@ export function useRates() {
           /* Keep in memory. */
         }
       } catch {
-        if (!controller.signal.aborted) setFailed(true)
+        if (isActive) setFailed(true)
       }
     }
+
     void loadRates()
-    return () => controller.abort()
+    return () => {
+      isActive = false
+    }
   }, [])
 
   const data = live ?? cached

@@ -181,9 +181,11 @@ body {
   color: var(--ink);
   font-family: var(--font-mono);
 }
-button,
-input {
-  font: inherit;
+@layer base {
+  button,
+  input {
+    font: inherit;
+  }
 }
 button {
   cursor: pointer;
