@@ -27,15 +27,41 @@ export function formatRate(value: number) {
   }).format(value)
 }
 
-export function formatRefreshTime(value: string) {
+export function formatRelativeTimestamp(value: string, now = new Date()) {
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return "recently"
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
+
+  const startOfToday = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate()
+  )
+  const startOfDate = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  )
+  const dayDifference = Math.round(
+    (startOfToday.getTime() - startOfDate.getTime()) / 86_400_000
+  )
+  const dayLabel =
+    dayDifference === 0
+      ? "Today"
+      : dayDifference === 1
+        ? "Yesterday"
+        : new Intl.DateTimeFormat("en-US", {
+            month: "short",
+            day: "numeric",
+            year:
+              date.getFullYear() === now.getFullYear() ? undefined : "numeric",
+          }).format(date)
+  const time = new Intl.DateTimeFormat("en-US", {
+    hour: "2-digit",
     minute: "2-digit",
+    hourCycle: "h23",
   }).format(date)
+
+  return `${dayLabel}, ${time}`
 }
 
 export function formatRateDate(value: string) {

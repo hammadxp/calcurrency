@@ -6,7 +6,7 @@ import {
   FALLBACK_RATES,
   FLAG_OVERRIDES,
 } from "@/data/currency"
-import { formatRateDate, formatRefreshTime, isRateData } from "@/utils/currency"
+import { formatRelativeTimestamp, isRateData } from "@/utils/currency"
 import type { RateData } from "@/types/currency"
 
 const CACHE_KEY = "calcurrency-rates"
@@ -90,15 +90,14 @@ export function useRates() {
   }, [])
 
   const data = live ?? cached
+
   return {
     rates: data?.rates ?? FALLBACK_RATES,
     currencies: data?.currencies ?? FALLBACK_CURRENCIES,
     status: live
-      ? live.rateDate
-        ? `Rates dated ${formatRateDate(live.rateDate)}`
-        : `Last refreshed ${formatRefreshTime(live.refreshedAt)}`
+      ? `Rates updated: ${formatRelativeTimestamp(live.refreshedAt)}`
       : cached
-        ? `Saved rates from ${formatRateDate(cached.rateDate ?? cached.refreshedAt.slice(0, 10))}`
+        ? `Saved rates from: ${formatRelativeTimestamp(cached.refreshedAt)}`
         : failed
           ? "Offline sample rates · verify before use"
           : "Checking rates · showing sample rates",

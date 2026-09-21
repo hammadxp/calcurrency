@@ -53,7 +53,7 @@ export function AppHeader({
         </div>
         <button
           type="button"
-          className="inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-rose-800 bg-transparent px-[15px] text-xs font-semibold text-rose-300 transition-colors hover:border-rose-300 hover:bg-rose-200 hover:text-slate-900 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 max-[760px]:justify-start"
+          className="inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-rose-400/70 bg-rose-500/10 px-[15px] text-xs font-semibold text-rose-100 transition-colors hover:border-rose-400 hover:bg-rose-500 hover:text-white focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 max-[760px]:justify-start"
           onClick={onDonate}
         >
           <Heart size={16} fill="currentColor" /> <span>Donate</span>

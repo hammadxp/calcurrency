@@ -190,8 +190,37 @@ body {
 button {
   cursor: pointer;
 }
-button:focus-visible,
-input:focus-visible {
+
+.amount-caret {
+  opacity: 0;
+}
+
+.peer:focus + .amount-caret {
+  animation: amount-caret-blink 1s step-end infinite;
+}
+
+@keyframes amount-caret-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.search-field:has(input:focus-visible) {
+  outline: 3px solid var(--coral);
+  outline-offset: 2px;
+}
+
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible) {
+  outline: none;
+}
+
+button:focus-visible {
   outline: 3px solid var(--coral);
   outline-offset: 3px;
 }

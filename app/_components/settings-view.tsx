@@ -1,4 +1,4 @@
-import { ArrowLeft, CircleHelp, Settings as SettingsIcon } from "lucide-react"
+import { ArrowLeft, CircleHelp } from "lucide-react"
 import { SettingRow } from "./setting-row"
 import { SETTING_ITEMS } from "@/data/currency"
 import type { Settings } from "@/types/currency"
@@ -35,14 +35,8 @@ export function SettingsView({
         </p>
       </div>
       <div className="mx-auto mt-8 max-w-[700px] overflow-hidden rounded-[10px] border border-stone-200 bg-stone-50 dark:border-slate-700 dark:bg-slate-900">
-        <div className="flex items-center justify-between bg-emerald-100 px-5 py-[18px] dark:bg-emerald-950">
-          <div className="flex items-center gap-[11px]">
-            <span className="grid size-[34px] place-items-center rounded-[5px] border border-slate-900 dark:border-stone-50">
-              <SettingsIcon size={18} />
-            </span>
-            <h2 className="text-[21px] tracking-[-0.08em]">Display & memory</h2>
-          </div>
-          <span className="text-[13px]">03 options</span>
+        <div className="bg-emerald-100 px-5 py-[18px] dark:bg-emerald-950">
+          <h2 className="text-[21px] tracking-[-0.08em]">Display & memory</h2>
         </div>
         {SETTING_ITEMS.map((item) => (
           <SettingRow

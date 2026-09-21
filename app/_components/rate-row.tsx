@@ -9,7 +9,7 @@ type RateRowProps = {
 
 export function RateRow({ currency, rate }: RateRowProps) {
   return (
-    <div className="grid min-h-[66px] grid-cols-[minmax(200px,1fr)_auto] items-center gap-5 border-t border-stone-200 px-3.5 py-3 text-base transition-colors hover:bg-stone-50 max-[760px]:grid-cols-[minmax(0,1fr)_auto] max-[760px]:gap-2 dark:border-slate-800 dark:hover:bg-slate-900">
+    <div className="grid min-h-[66px] grid-cols-[minmax(200px,1fr)_auto] items-center gap-5 border-b border-stone-200 px-3.5 py-3 text-base transition-colors hover:bg-stone-50 max-[760px]:grid-cols-[minmax(0,1fr)_auto] max-[760px]:gap-2 dark:border-slate-800 dark:hover:bg-slate-900">
       <span className="flex items-center gap-3">
         <FlagIcon currency={currency} size="small" />
         <span className="flex flex-col gap-1">

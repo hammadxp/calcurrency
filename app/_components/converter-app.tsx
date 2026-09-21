@@ -15,7 +15,8 @@ import { normalizeAmount } from "@/utils/currency"
 
 export function ConverterApp() {
   const [view, setView] = useState<View>("convert")
-  const [picker, setPicker] = useState<Slot | null>(null)
+  const [picker, setPicker] = useState<Slot | "rates" | null>(null)
+  const [ratesBaseCode, setRatesBaseCode] = useState("USD")
   const [donateOpen, setDonateOpen] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const { pair, setPair, amount, setAmount, settings, setSettings } =
@@ -51,12 +52,20 @@ export function ConverterApp() {
   }
 
   function selectCurrency(code: string) {
-    if (picker) setPair((current) => ({ ...current, [picker]: code }))
+    if (picker === "rates") {
+      setRatesBaseCode(code)
+    } else if (picker) {
+      setPair((current) => ({ ...current, [picker]: code }))
+    }
+
     closePicker()
   }
 
   function clearCurrency() {
-    if (picker) setPair((current) => ({ ...current, [picker]: null }))
+    if (picker && picker !== "rates") {
+      setPair((current) => ({ ...current, [picker]: null }))
+    }
+
     setAmount("")
     closePicker()
   }
@@ -94,11 +103,14 @@ export function ConverterApp() {
       ) : null}
       {view === "rates" ? (
         <RatesView
-          from={from}
-          to={to}
-          pairRate={pairRate}
+          base={
+            currencies.find((currency) => currency.code === ratesBaseCode) ??
+            currencies[0] ??
+            null
+          }
           rates={rates}
           currencies={currencies}
+          onOpenBase={() => setPicker("rates")}
           onBack={() => changeView("convert")}
         />
       ) : null}
@@ -112,10 +124,10 @@ export function ConverterApp() {
       {picker ? (
         <CurrencyPicker
           slot={picker}
-          selectedCode={pair[picker]}
+          selectedCode={picker === "rates" ? ratesBaseCode : pair[picker]}
           currencies={currencies}
           onSelect={selectCurrency}
-          onClear={clearCurrency}
+          onClear={picker === "rates" ? undefined : clearCurrency}
           onClose={closePicker}
         />
       ) : null}

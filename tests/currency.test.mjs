@@ -4,6 +4,7 @@ import {
   formatAmount,
   formatRateDate,
   formatRate,
+  formatRelativeTimestamp,
   isRateData,
   normalizeAmount,
 } from "../utils/currency.ts"
@@ -36,6 +37,18 @@ test("reference rates retain useful precision regardless of amount settings", ()
 
 test("provider date is displayed without a local timezone shift", () => {
   assert.equal(formatRateDate("2026-09-17"), "Sep 17, 2026")
+})
+
+test("rate timestamps use readable relative dates and 24-hour time", () => {
+  const now = new Date(2026, 8, 21, 12, 0)
+  assert.equal(
+    formatRelativeTimestamp(new Date(2026, 8, 21, 0, 5).toISOString(), now),
+    "Today, 00:05"
+  )
+  assert.equal(
+    formatRelativeTimestamp(new Date(2026, 8, 20, 16, 30).toISOString(), now),
+    "Yesterday, 16:30"
+  )
 })
 
 test("cached rates require matching currencies and positive rates", () => {

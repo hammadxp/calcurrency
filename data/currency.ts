@@ -1,7 +1,7 @@
 import type { Currency } from "@/types/currency"
 
 export const FALLBACK_CURRENCIES: Currency[] = [
-  { code: "USD", name: "US Dollar", symbol: "$", flag: "us" },
+  { code: "USD", name: "United States Dollar", symbol: "$", flag: "us" },
   { code: "EUR", name: "Euro", symbol: "€", flag: "eu" },
   { code: "GBP", name: "British Pound", symbol: "£", flag: "gb" },
   { code: "JPY", name: "Japanese Yen", symbol: "¥", flag: "jp" },

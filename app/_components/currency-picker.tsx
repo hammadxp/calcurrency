@@ -7,11 +7,11 @@ import { useModalFocus } from "@/hooks/use-modal-focus"
 import type { Currency, Slot } from "@/types/currency"
 
 type CurrencyPickerProps = {
-  slot: Slot
+  slot: Slot | "rates"
   selectedCode: string | null
   currencies: Currency[]
   onSelect: (code: string) => void
-  onClear: () => void
+  onClear?: () => void
   onClose: () => void
 }
 
@@ -55,7 +55,12 @@ export function CurrencyPicker({
         <div className="flex justify-between bg-emerald-100 px-[26px] pt-[26px] pb-[21px] dark:bg-emerald-950">
           <div>
             <span className="mb-[7px] block text-[11px] font-bold tracking-[0.08em] text-slate-500 uppercase dark:text-slate-300">
-              select {slot === "from" ? "source" : "target"}
+              select{" "}
+              {slot === "from"
+                ? "source"
+                : slot === "to"
+                  ? "target"
+                  : "rate base"}
             </span>
             <h2 className="text-[25px] tracking-[-0.08em]" id={titleId}>
               Pick a currency
@@ -70,7 +75,7 @@ export function CurrencyPicker({
             <X size={18} />
           </button>
         </div>
-        <label className="mx-5 my-3 flex items-center gap-2.5 rounded-[7px] border border-stone-200 bg-stone-100 px-3.5 py-3 focus-within:outline-[3px] focus-within:outline-offset-2 focus-within:outline-rose-500 max-[760px]:mx-3.5 dark:border-slate-600 dark:bg-slate-900">
+        <label className="search-field mx-5 my-3 flex items-center gap-2.5 rounded-[7px] border border-stone-200 bg-stone-100 px-3.5 py-3 max-[760px]:mx-3.5 dark:border-slate-600 dark:bg-slate-900">
           <Search size={17} />
           <input
             className="min-w-0 flex-1 border-0 bg-transparent text-[13px] text-slate-900 outline-none placeholder:text-slate-500 dark:text-stone-50"
@@ -99,15 +104,17 @@ export function CurrencyPicker({
             </p>
           ) : null}
         </div>
-        <div className="border-t border-stone-200 px-6 py-[13px] dark:border-slate-700">
-          <button
-            type="button"
-            className="p-1.5 text-[13px] text-rose-600 underline focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 dark:text-rose-400"
-            onClick={onClear}
-          >
-            Clear this currency
-          </button>
-        </div>
+        {onClear ? (
+          <div className="border-t border-stone-200 px-6 py-[13px] dark:border-slate-700">
+            <button
+              type="button"
+              className="p-1.5 text-[13px] text-rose-600 underline focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 dark:text-rose-400"
+              onClick={onClear}
+            >
+              Clear this currency
+            </button>
+          </div>
+        ) : null}
       </div>
     </div>
   )
