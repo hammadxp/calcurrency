@@ -33,26 +33,26 @@ export function RatesView({
   const baseRate = base ? rates[base.code] : undefined
 
   return (
-    <section className="min-h-[calc(100svh-70px)] bg-stone-50 px-[max(5vw,28px)] pt-[38px] pb-[60px] text-slate-900 max-[760px]:px-[17px] max-[760px]:pt-[26px] max-[760px]:pb-11 dark:bg-slate-950 dark:text-stone-50">
-      <div className="mx-auto mb-7 flex max-w-[1180px] items-center justify-between text-[13px] text-slate-500 max-[760px]:mb-6 max-[760px]:text-[9px] dark:text-slate-300">
+    <section className="min-h-[calc(100svh-70px)] bg-stone-50 px-[max(5vw,28px)] pt-9.5 pb-15 text-slate-900 max-[760px]:px-4.25 max-[760px]:pt-6.5 max-[760px]:pb-11 dark:bg-slate-950 dark:text-stone-50">
+      <div className="mx-auto mb-7 flex max-w-295 items-center justify-between text-[13px] text-slate-500 max-[760px]:mb-6 max-[760px]:text-[9px] dark:text-slate-300">
         <button
           type="button"
-          className="inline-flex items-center gap-1.5 rounded-md border border-stone-200 bg-stone-50 px-[13px] py-2.5 text-[13px] text-slate-900 transition-colors hover:bg-slate-900 hover:text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 dark:border-slate-700 dark:bg-slate-800 dark:text-stone-50"
+          className="inline-flex items-center gap-1.5 rounded-md border border-stone-200 bg-stone-50 px-3.25 py-2.5 text-[13px] text-slate-900 transition-colors hover:bg-slate-900 hover:text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 dark:border-slate-700 dark:bg-slate-800 dark:text-stone-50"
           onClick={onBack}
         >
           <ArrowLeft size={16} /> Converter
         </button>
         <span>Indicative reference rates</span>
       </div>
-      <div className="mx-auto max-w-[1180px]">
-        <h1 className="max-w-[720px] font-sans text-[clamp(31px,3.4vw,48px)] leading-[1.1] font-bold tracking-[-0.05em]">
+      <div className="mx-auto max-w-295">
+        <h1 className="max-w-180 font-sans text-[clamp(31px,3.4vw,48px)] leading-[1.1] font-bold tracking-tighter">
           Exchange rates
         </h1>
-        <p className="mt-[9px] max-w-[650px] text-base leading-[1.5] text-slate-500 max-[760px]:text-sm dark:text-slate-300">
+        <p className="mt-2.25 max-w-162.5 text-base leading-normal text-slate-500 max-[760px]:text-sm dark:text-slate-300">
           Compare indicative rates before sending money.
         </p>
       </div>
-      <div className="mx-auto mt-[34px] flex max-w-[1180px] items-center gap-5 rounded-[9px] bg-emerald-600 px-6 py-5 text-base text-emerald-50 max-[760px]:mt-[25px] max-[760px]:flex-col max-[760px]:items-start max-[760px]:gap-3 max-[760px]:p-[17px] max-[760px]:text-sm dark:bg-emerald-800">
+      <div className="mx-auto mt-8.5 flex max-w-295 items-center gap-5 rounded-[9px] bg-emerald-600 px-6 py-5 text-base text-emerald-50 max-[760px]:mt-6.25 max-[760px]:flex-col max-[760px]:items-start max-[760px]:gap-3 max-[760px]:p-4.25 max-[760px]:text-sm dark:bg-emerald-800">
         <span className="text-emerald-100">Base currency</span>
         <button
           type="button"
@@ -67,7 +67,7 @@ export function RatesView({
           Compare every currency against {base?.name ?? "your chosen base"}.
         </span>
       </div>
-      <div className="mx-auto mt-[34px] flex max-w-[1180px] items-end justify-between gap-6 border-b border-stone-200 pb-3 max-[760px]:flex-col max-[760px]:items-stretch max-[760px]:gap-3 dark:border-slate-700">
+      <div className="mx-auto mt-8.5 flex max-w-295 items-end justify-between gap-6 border-b border-stone-200 pb-3 max-[760px]:flex-col max-[760px]:items-stretch max-[760px]:gap-3 dark:border-slate-700">
         <div className="flex items-end gap-4 max-[760px]:justify-between">
           <h2 className="text-[25px] tracking-[-0.08em] max-[760px]:text-[21px]">
             Currencies
@@ -88,7 +88,7 @@ export function RatesView({
           />
         </label>
       </div>
-      <div className="mx-auto max-w-[1180px]">
+      <div className="mx-auto max-w-295">
         {filteredCurrencies.map((currency) => (
           <RateRow
             key={currency.code}

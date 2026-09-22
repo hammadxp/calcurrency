@@ -31,8 +31,8 @@ export function CurrencyPanel({
       className={cn(
         "flex min-h-0 flex-col justify-center p-[clamp(28px,5vh,64px)_clamp(24px,6vw,100px)_clamp(24px,4vh,48px)] max-[760px]:p-[11px_16px] max-[360px]:px-2.5",
         role === "source"
-          ? "bg-stone-50 dark:bg-slate-900"
-          : "bg-emerald-600 text-emerald-50 dark:bg-emerald-800"
+          ? "bg-emerald-600 text-emerald-50 dark:bg-emerald-800"
+          : "bg-stone-50 text-slate-800 dark:bg-slate-900"
       )}
     >
       <div

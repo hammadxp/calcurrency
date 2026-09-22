@@ -23,7 +23,7 @@ export function CurrencyAmount({
     <div className="flex w-full min-w-0 items-end justify-end gap-2 overflow-visible">
       <span
         className={cn(
-          "shrink-0 text-[clamp(26px,4.2vw,66px)] leading-none font-[var(--font-amount),monospace] text-emerald-600 max-[760px]:text-[clamp(15px,4.5vw,31px)] max-[360px]:text-[15px] dark:text-emerald-300",
+          "shrink-0 bg-red-200 text-[clamp(26px,4.2vw,66px)] leading-none font-[var(--font-amount),monospace] max-[760px]:text-[clamp(15px,4.5vw,31px)] max-[360px]:text-[15px]",
           role === "target" && "text-white/50"
         )}
       >
@@ -31,9 +31,9 @@ export function CurrencyAmount({
       </span>
 
       {role === "source" ? (
-        <span className="flex min-w-0 items-center gap-1">
+        <span className="flex min-w-0 items-center">
           <input
-            className="peer block max-w-full min-w-0 flex-[0_1_auto] border-0 bg-red-200 text-center text-[clamp(52px,8.4vw,132px)] leading-0 font-[var(--font-amount),monospace] tracking-tighter text-slate-900 tabular-nums caret-transparent outline-none placeholder:text-slate-500 focus-visible:outline-none max-[760px]:text-[clamp(29px,9vw,62px)] max-[360px]:text-[29px] dark:text-white dark:placeholder:text-slate-400"
+            className="peer bg-red-200 text-center text-[clamp(52px,8.4vw,132px)] leading-none tracking-tighter text-slate-900 caret-transparent outline-none placeholder:text-slate-500 focus-visible:outline-none max-[760px]:text-[clamp(29px,9vw,62px)] max-[360px]:text-[29px] dark:text-white dark:placeholder:text-slate-400"
             style={{ width: `${amount ? Math.max(amount.length, 1) : 4}ch` }}
             inputMode="decimal"
             value={amount ?? ""}
@@ -50,7 +50,7 @@ export function CurrencyAmount({
         </span>
       ) : (
         <output
-          className="block w-max max-w-full flex-[0_1_auto] overflow-visible bg-red-400 pr-2.5 text-right text-[clamp(52px,8.4vw,132px)] leading-none font-normal tracking-[-0.075em] whitespace-nowrap text-white tabular-nums max-[760px]:text-[clamp(29px,9vw,62px)] max-[360px]:text-[29px] dark:text-white"
+          className="mr-3 bg-blue-200 text-center text-[clamp(52px,8.4vw,132px)] leading-none tracking-tighter max-[760px]:text-[clamp(29px,9vw,62px)] max-[360px]:text-[29px]"
           aria-label={`Converted amount in ${currency.code}`}
         >
           {converted !== undefined && Number.isFinite(converted)

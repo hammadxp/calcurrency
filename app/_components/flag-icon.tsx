@@ -9,10 +9,10 @@ export function FlagIcon({ currency, size = "medium" }: FlagIconProps) {
   return currency.flag ? (
     <Image
       className={cn(
-        "block shrink-0 rounded-md object-cover shadow-[0_2px_8px_rgb(15_23_42_/_18%)]",
+        "block shrink-0 rounded-md object-cover shadow-[0_2px_8px_rgb(15_23_42/18%)]",
         size === "small"
           ? "h-5 w-7 rounded-[4px]"
-          : "h-[46px] w-[86px] max-w-[86px] max-[760px]:h-9"
+          : "h-11.5 w-21.5 max-w-21.5 max-[760px]:h-9"
       )}
       src={`https://flagcdn.com/w320/${currency.flag}.png`}
       width={320}
@@ -25,8 +25,8 @@ export function FlagIcon({ currency, size = "medium" }: FlagIconProps) {
       className={cn(
         "grid shrink-0 place-items-center rounded bg-emerald-100 text-emerald-600",
         size === "small"
-          ? "h-5 w-7 rounded-[4px]"
-          : "h-[46px] w-[86px] max-[760px]:h-9"
+          ? "h-5 w-7 rounded-lg"
+          : "h-11.5 w-21.5 max-[760px]:h-9"
       )}
       aria-hidden="true"
     >
