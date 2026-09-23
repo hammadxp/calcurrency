@@ -132,6 +132,42 @@ export function parseEditableAmount(value: string, locale: string) {
   return normalizeAmount(ungrouped.replace(decimal, "."))
 }
 
+export function deleteEditableAmount(
+  display: string,
+  selectionStart: number,
+  selectionEnd: number,
+  locale: string,
+  key: "Backspace" | "Delete"
+) {
+  const raw = parseEditableAmount(display, locale)
+  const rawStart = parseEditableAmount(
+    display.slice(0, selectionStart),
+    locale
+  ).length
+  const rawEnd = parseEditableAmount(
+    display.slice(0, selectionEnd),
+    locale
+  ).length
+  let removeStart =
+    selectionStart === selectionEnd && key === "Backspace"
+      ? Math.max(0, rawStart - 1)
+      : rawStart
+  let removeEnd =
+    selectionStart === selectionEnd && key === "Delete"
+      ? Math.min(raw.length, rawEnd + 1)
+      : rawEnd
+
+  if (selectionStart !== selectionEnd && removeStart === removeEnd) {
+    if (key === "Backspace") removeStart = Math.max(0, rawStart - 1)
+    else removeEnd = Math.min(raw.length, rawEnd + 1)
+  }
+
+  return {
+    value: raw.slice(0, removeStart) + raw.slice(removeEnd),
+    cursor: removeStart,
+  }
+}
+
 export function isRateData(value: unknown): value is RateData {
   if (!value || typeof value !== "object") return false
   const data = value as Partial<RateData>

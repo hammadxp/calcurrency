@@ -4,6 +4,7 @@ export const DEFAULT_SETTINGS: Settings = {
   decimals: true,
   compact: false,
   remember: true,
+  showDonate: true,
 }
 
 export const KEYPAD_KEYS = [

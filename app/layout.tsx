@@ -36,7 +36,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         geist.variable
       )}
     >
-      <body className="m-0 min-h-screen overflow-x-hidden bg-stone-50 font-mono text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+      <body className="m-0 min-h-screen overflow-x-hidden bg-background font-mono text-foreground">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict"
 import test from "node:test"
 import {
+  deleteEditableAmount,
   formatAmount,
   formatEditableAmount,
   formatRateDate,
@@ -26,7 +27,29 @@ test("editable amounts use locale separators without changing stored digits", ()
   assert.equal(formatEditableAmount("12.", "de-DE"), "12,")
   assert.equal(formatEditableAmount("1234567.80", "en-IN"), "12,34,567.80")
   assert.equal(formatEditableAmount("", "de-DE"), "")
-  assert.equal(formatAmount(1234.56, "EUR", settings, undefined, "de-DE"), "1.234,56")
+  assert.equal(
+    formatAmount(1234.56, "EUR", settings, undefined, "de-DE"),
+    "1.234,56"
+  )
+})
+
+test("backspace and delete remove digits around grouping separators", () => {
+  assert.deepEqual(deleteEditableAmount("1,234", 5, 5, "en-US", "Backspace"), {
+    value: "123",
+    cursor: 3,
+  })
+  assert.deepEqual(deleteEditableAmount("1,234", 2, 2, "en-US", "Backspace"), {
+    value: "234",
+    cursor: 0,
+  })
+  assert.deepEqual(deleteEditableAmount("1.234", 1, 1, "de-DE", "Delete"), {
+    value: "134",
+    cursor: 1,
+  })
+  assert.deepEqual(deleteEditableAmount("1,234", 1, 2, "en-US", "Delete"), {
+    value: "134",
+    cursor: 1,
+  })
 })
 
 test("display settings affect converted amounts", () => {

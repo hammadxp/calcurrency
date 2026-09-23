@@ -13,10 +13,10 @@ type SettingRowProps = {
 
 export function SettingRow({ setting, checked, onToggle }: SettingRowProps) {
   return (
-    <div className="relative flex items-center justify-between gap-5 border-t border-stone-200 px-4 py-5 md:p-6 dark:border-slate-800">
+    <div className="relative flex items-center justify-between gap-5 border-t border-stone-200 px-4 py-5 md:p-6 dark:border-neutral-800">
       <span className="flex flex-col gap-[5px]">
         <strong className="text-sm md:text-base">{setting.title}</strong>
-        <small className="text-xs text-slate-500 md:text-[13px] dark:text-slate-300">
+        <small className="text-xs text-slate-500 md:text-[13px] dark:text-neutral-300">
           {setting.detail}
         </small>
       </span>

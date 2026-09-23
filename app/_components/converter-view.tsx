@@ -36,7 +36,7 @@ export function ConverterView({
       className="grid h-[calc(100svh-58px)] min-h-0 grid-rows-[minmax(0,1fr)_auto] overflow-hidden md:flex md:h-[calc(100svh-70px)] md:flex-col"
       aria-label="Currency converter"
     >
-      <div className="grid h-full min-h-0 w-full flex-1 grid-rows-[minmax(0,1fr)_minmax(0,1fr)] self-center">
+      <div className="grid h-full min-h-0 w-full grid-rows-[minmax(0,1fr)_minmax(0,1fr)]">
         <CurrencyPanel
           currency={from}
           loading={loading}

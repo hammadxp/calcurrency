@@ -52,7 +52,14 @@ function readSettings(value: string | null): Settings {
           typeof settings.compact === "boolean" &&
           typeof settings.remember === "boolean"
         ) {
-          return settings as Settings
+          return {
+            ...DEFAULT_SETTINGS,
+            ...settings,
+            showDonate:
+              typeof settings.showDonate === "boolean"
+                ? settings.showDonate
+                : DEFAULT_SETTINGS.showDonate,
+          }
         }
       }
     } catch {

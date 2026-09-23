@@ -57,16 +57,16 @@ function FlagImage({ flag, size }: FlagImageProps) {
         "relative block shrink-0 overflow-hidden rounded-md",
         size === "small"
           ? "h-5 w-7 rounded-[4px]"
-          : "h-9 w-21.5 max-w-21.5 md:h-11.5"
+          : "h-9 w-21.5 max-w-21.5 shadow-md md:h-11.5"
       )}
       aria-hidden="true"
     >
       {!loaded ? (
-        <span className="absolute inset-0 animate-pulse bg-emerald-100/40 dark:bg-slate-700/70" />
+        <span className="absolute inset-0 animate-pulse bg-emerald-100/40 dark:bg-neutral-700/70" />
       ) : null}
       <Image
         className={cn(
-          "block h-full w-full object-cover shadow-[0_2px_8px_rgb(15_23_42/18%)]",
+          "block h-full w-full object-cover",
           !loaded && "opacity-0"
         )}
         src={`https://flagcdn.com/w320/${flag}.png`}

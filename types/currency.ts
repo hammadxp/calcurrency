@@ -12,6 +12,7 @@ export type Settings = {
   decimals: boolean
   compact: boolean
   remember: boolean
+  showDonate: boolean
 }
 
 export type RateData = {

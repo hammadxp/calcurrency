@@ -32,11 +32,11 @@ export function RatesView({
   const baseRate = base ? rates[base.code] : undefined
 
   return (
-    <section className="min-h-[calc(100svh-70px)] bg-stone-50 px-4.25 pt-6.5 pb-11 text-slate-900 md:px-[max(5vw,28px)] md:pt-9.5 md:pb-15 dark:bg-slate-950 dark:text-stone-50">
-      <div className="mx-auto mb-6 flex max-w-295 items-center justify-between text-[9px] text-slate-500 md:mb-7 md:text-[13px] dark:text-slate-300">
+    <section className="min-h-[calc(100svh-70px)] bg-background px-4.25 pt-6.5 pb-11 text-foreground md:px-[max(5vw,28px)] md:pt-9.5 md:pb-15">
+      <div className="mx-auto mb-6 flex max-w-295 items-center justify-between text-[9px] text-slate-500 md:mb-7 md:text-[13px] dark:text-neutral-300">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 rounded-md border border-stone-200 bg-stone-50 px-3.25 py-2.5 text-[13px] text-slate-900 transition-colors hover:bg-slate-900 hover:text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 dark:border-slate-700 dark:bg-slate-800 dark:text-stone-50"
+          className="inline-flex items-center gap-1.5 rounded-md border border-stone-200 bg-stone-50 px-3.25 py-2.5 text-[13px] text-slate-900 transition-colors hover:bg-slate-900 hover:text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-stone-50"
         >
           <ArrowLeft size={16} /> Converter
         </Link>
@@ -46,7 +46,7 @@ export function RatesView({
         <h1 className="max-w-180 font-sans text-[clamp(31px,3.4vw,48px)] leading-[1.1] font-bold tracking-tighter">
           Exchange rates
         </h1>
-        <p className="mt-2.25 max-w-162.5 text-sm leading-normal text-slate-500 md:text-base dark:text-slate-300">
+        <p className="mt-2.25 max-w-162.5 text-sm leading-normal text-slate-500 md:text-base dark:text-neutral-300">
           Compare indicative rates before sending money.
         </p>
       </div>
@@ -65,19 +65,19 @@ export function RatesView({
           Compare every currency against {base?.name ?? "your chosen base"}.
         </span>
       </div>
-      <div className="mx-auto mt-8.5 flex max-w-295 flex-col items-stretch justify-between gap-3 border-b border-stone-200 pb-3 md:flex-row md:items-end md:gap-6 dark:border-slate-700">
+      <div className="mx-auto mt-8.5 flex max-w-295 flex-col items-stretch justify-between gap-3 border-b border-stone-200 pb-3 md:flex-row md:items-end md:gap-6 dark:border-neutral-700">
         <div className="flex items-end justify-between gap-4 md:justify-start">
           <h2 className="text-[21px] tracking-[-0.08em] md:text-[25px]">
             Currencies
           </h2>
-          <span className="pb-1.5 text-[13px] text-slate-500 dark:text-slate-300">
+          <span className="pb-1.5 text-[13px] text-slate-500 dark:text-neutral-300">
             1 {base?.code ?? "currency"} equals
           </span>
         </div>
-        <label className="search-field flex w-full max-w-none items-center gap-2.5 rounded-md border border-stone-200 bg-white px-3 py-2.5 text-slate-500 md:max-w-80 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
+        <label className="search-field flex w-full max-w-none items-center gap-2.5 rounded-md border border-stone-200 bg-white px-3 py-2.5 text-slate-500 md:max-w-80 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
           <Search size={16} />
           <input
-            className="min-w-0 flex-1 border-0 bg-transparent text-[13px] text-slate-900 outline-none placeholder:text-slate-500 dark:text-stone-50 dark:placeholder:text-slate-400"
+            className="min-w-0 flex-1 border-0 bg-transparent text-[13px] text-slate-900 outline-none placeholder:text-slate-500 dark:text-stone-50 dark:placeholder:text-neutral-400"
             type="search"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
@@ -95,7 +95,7 @@ export function RatesView({
           />
         ))}
         {filteredCurrencies.length === 0 ? (
-          <p className="px-3.5 py-8 text-sm text-slate-500 dark:text-slate-300">
+          <p className="px-3.5 py-8 text-sm text-slate-500 dark:text-neutral-300">
             No currencies match your search.
           </p>
         ) : null}

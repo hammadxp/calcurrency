@@ -42,4 +42,9 @@ export const SETTING_ITEMS = [
     title: "Remember my last amount",
     detail: "Save your last typed value to this browser only.",
   },
+  {
+    key: "showDonate",
+    title: "Show Donate button",
+    detail: "Keep the Donate button in the navigation.",
+  },
 ] as const

@@ -22,7 +22,7 @@ export function ThemeToggle() {
       type="button"
       variant="header"
       size="lg"
-      className="justify-start md:justify-center md:px-3"
+      className="justify-start md:justify-center md:px-3 dark:border-neutral-600 dark:text-neutral-300"
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label={isDark ? "Use light theme" : "Use dark theme"}
       title={isDark ? "Use light theme" : "Use dark theme"}

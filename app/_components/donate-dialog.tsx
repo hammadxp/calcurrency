@@ -15,7 +15,7 @@ export function DonateDialog({ onClose }: DonateDialogProps) {
 
   return (
     <div
-      className="fixed inset-0 z-20 grid place-items-center bg-slate-900/60 p-5 backdrop-blur-[8px]"
+      className="fixed inset-0 z-20 grid place-items-center bg-slate-900/60 p-5 backdrop-blur-[8px] dark:bg-neutral-950/70"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose()
       }}
@@ -39,19 +39,19 @@ export function DonateDialog({ onClose }: DonateDialogProps) {
         >
           <X size={18} />
         </button>
-        <span className="mb-[7px] block text-[11px] font-bold tracking-[0.08em] text-slate-500 uppercase dark:text-slate-300">
+        <span className="mb-[7px] block text-[11px] font-bold tracking-[0.08em] text-slate-500 uppercase dark:text-neutral-300">
           keep the rates fresh
         </span>
         <h2 className="text-[25px] tracking-[-0.08em]" id={titleId}>
           Buy us a tiny coffee.
         </h2>
-        <p className="my-[18px] mb-6 max-w-80 text-[13px] leading-[1.6] text-slate-600 dark:text-slate-300">
+        <p className="my-[18px] mb-6 max-w-80 text-[13px] leading-[1.6] text-slate-600 dark:text-neutral-300">
           calcurrency is a weekend tool with no sign-up and no noise. If it
           saved you a tab, chip in for the next pot.
         </p>
         <button
           type="button"
-          className="inline-flex items-center gap-2 rounded-md bg-slate-900 px-4 py-[13px] text-xs text-stone-50 transition-colors hover:bg-slate-700 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 dark:bg-stone-50 dark:text-slate-900"
+          className="inline-flex items-center gap-2 rounded-md bg-slate-900 px-4 py-[13px] text-xs text-stone-50 transition-colors hover:bg-slate-700 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 dark:bg-stone-50 dark:text-neutral-900"
           onClick={onClose}
         >
           Send a high five <Heart size={15} />

@@ -7,6 +7,7 @@ import { ThemeToggle } from "./theme-toggle"
 
 type AppHeaderProps = {
   view: View
+  showDonate: boolean
   status: string
   refreshing: boolean
   onRefresh: () => void
@@ -18,6 +19,7 @@ type AppHeaderProps = {
 
 export function AppHeader({
   view,
+  showDonate,
   status,
   refreshing,
   onRefresh,
@@ -27,7 +29,7 @@ export function AppHeader({
   onDonate,
 }: AppHeaderProps) {
   return (
-    <header className="relative z-10 flex min-h-[58px] items-center gap-3 bg-slate-900 px-5 text-stone-50 md:min-h-[70px] md:gap-5 md:px-9">
+    <header className="relative z-10 flex min-h-[58px] items-center gap-3 bg-slate-900 px-5 text-stone-50 md:min-h-[70px] md:gap-5 md:px-9 dark:bg-neutral-900">
       <Link
         href="/"
         className="flex items-center gap-1.5 border-0 bg-transparent p-0 text-[13px] font-extrabold tracking-[-0.06em] text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:text-base"
@@ -50,31 +52,33 @@ export function AppHeader({
       />
       <nav
         className={cn(
-          "absolute top-[58px] right-2.5 z-20 m-0 hidden w-68 max-w-[calc(100vw-20px)] flex-col items-stretch gap-2 rounded-b-[9px] border border-slate-600 bg-slate-900 p-2.5 shadow-2xl md:static md:z-auto md:ml-auto md:flex md:w-auto md:max-w-none md:flex-row md:items-center md:rounded-none md:border-0 md:bg-transparent md:p-0 md:shadow-none",
+          "absolute top-[58px] right-2.5 z-20 m-0 hidden w-68 max-w-[calc(100vw-20px)] flex-col items-stretch gap-2 rounded-b-[9px] border border-slate-600 bg-slate-900 p-2.5 shadow-2xl md:static md:z-auto md:ml-auto md:flex md:w-auto md:max-w-none md:flex-row md:items-center md:rounded-none md:border-0 md:bg-transparent md:p-0 md:shadow-none dark:border-neutral-600 dark:bg-neutral-900 md:dark:bg-transparent",
           mobileNavOpen && "flex"
         )}
         aria-label="Main navigation"
       >
-        <RateStatus
-          status={status}
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          className="px-1.5 pt-2 pb-3 md:hidden"
-        />
+        {showDonate ? (
+          <>
+            <button
+              type="button"
+              className="inline-flex min-h-10 items-center justify-start gap-2 rounded-md border border-rose-400/70 bg-rose-500/10 px-[15px] text-xs font-semibold text-rose-100 transition-colors hover:border-rose-400 hover:bg-rose-500 hover:text-white focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:justify-center"
+              onClick={onDonate}
+            >
+              <Heart size={16} fill="currentColor" /> <span>Donate</span>
+            </button>
+            <span
+              className="my-1 h-px bg-slate-600 md:mx-1 md:my-0 md:h-6 md:w-px dark:bg-neutral-600"
+              aria-hidden="true"
+            />
+          </>
+        ) : null}
         <ThemeToggle />
-        <button
-          type="button"
-          className="inline-flex min-h-10 items-center justify-start gap-2 rounded-md border border-rose-400/70 bg-rose-500/10 px-[15px] text-xs font-semibold text-rose-100 transition-colors hover:border-rose-400 hover:bg-rose-500 hover:text-white focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:justify-center"
-          onClick={onDonate}
-        >
-          <Heart size={16} fill="currentColor" /> <span>Donate</span>
-        </button>
         <Link
           href="/rates"
           className={cn(
-            "inline-flex min-h-10 items-center justify-start gap-2 rounded-md border border-slate-600 bg-transparent px-[15px] text-xs font-semibold text-slate-300 transition-colors hover:border-emerald-100 hover:bg-emerald-100 hover:text-slate-900 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:justify-center",
+            "inline-flex min-h-10 items-center justify-start gap-2 rounded-md border border-slate-600 bg-transparent px-[15px] text-xs font-semibold text-slate-300 transition-colors hover:border-emerald-100 hover:bg-emerald-100 hover:text-slate-900 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:justify-center dark:border-neutral-600 dark:text-neutral-300",
             view === "rates" &&
-              "border-emerald-100 bg-emerald-100 text-slate-900"
+              "border-emerald-100 bg-emerald-100 text-slate-900 dark:text-neutral-900"
           )}
           onClick={onNavigate}
           aria-current={view === "rates" ? "page" : undefined}
@@ -84,19 +88,25 @@ export function AppHeader({
         <Link
           href="/settings"
           className={cn(
-            "inline-flex min-h-10 items-center justify-start gap-2 rounded-md border border-slate-600 bg-transparent px-[15px] text-xs font-semibold text-slate-300 transition-colors hover:border-emerald-100 hover:bg-emerald-100 hover:text-slate-900 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:justify-center",
+            "inline-flex min-h-10 items-center justify-start gap-2 rounded-md border border-slate-600 bg-transparent px-[15px] text-xs font-semibold text-slate-300 transition-colors hover:border-emerald-100 hover:bg-emerald-100 hover:text-slate-900 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:justify-center dark:border-neutral-600 dark:text-neutral-300",
             view === "settings" &&
-              "border-emerald-100 bg-emerald-100 text-slate-900"
+              "border-emerald-100 bg-emerald-100 text-slate-900 dark:text-neutral-900"
           )}
           onClick={onNavigate}
           aria-current={view === "settings" ? "page" : undefined}
         >
           <Settings size={15} /> <span>Settings</span>
         </Link>
+        <RateStatus
+          status={status}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          className="px-1.5 pt-2 pb-3 md:hidden"
+        />
       </nav>
       <button
         type="button"
-        className="ml-auto grid size-9 place-items-center rounded-md border border-slate-500 bg-transparent text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:hidden"
+        className="ml-auto grid size-9 place-items-center rounded-md border border-slate-500 bg-transparent text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:hidden dark:border-neutral-500"
         onClick={onToggleNav}
         aria-expanded={mobileNavOpen}
         aria-label="Toggle navigation"
@@ -123,7 +133,7 @@ function RateStatus({
   return (
     <div
       className={cn(
-        "flex items-center gap-2 text-[11px] leading-none text-slate-300",
+        "flex items-center gap-2 text-[11px] leading-none text-slate-300 dark:text-neutral-300",
         className
       )}
       role="status"
@@ -135,7 +145,7 @@ function RateStatus({
       />
       {refreshing ? (
         <span
-          className="h-3 w-36 animate-pulse rounded bg-slate-600"
+          className="h-3 w-36 animate-pulse rounded bg-slate-600 dark:bg-neutral-600"
           aria-hidden="true"
         />
       ) : (

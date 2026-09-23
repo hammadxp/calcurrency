@@ -7,17 +7,17 @@ type CurrencyPanelSkeletonProps = {
 export function CurrencyPanelSkeleton({ role }: CurrencyPanelSkeletonProps) {
   const surface =
     role === "source"
-      ? "bg-slate-900/15"
-      : "bg-slate-300/60 dark:bg-slate-700/70"
+      ? "bg-neutral-900/15"
+      : "bg-slate-300/60 dark:bg-neutral-700/70"
 
   return (
     <>
       <div
-        className="flex min-w-0 flex-row flex-wrap items-center gap-x-3 gap-y-2.5 md:flex-col md:flex-nowrap md:items-start md:gap-4.25"
+        className="flex min-w-0 flex-col items-start gap-1.5 md:gap-4.25"
         aria-hidden="true"
       >
         <span className={cn("h-12 w-21.5 animate-pulse rounded-md", surface)} />
-        <div className="flex min-w-0 flex-row items-center gap-1.75 md:flex-col md:items-start md:gap-2.5">
+        <div className="flex min-w-0 flex-col items-start gap-1.5 md:gap-2.5">
           <span
             className={cn(
               "h-9 w-21.5 animate-pulse rounded-md md:h-11.5",

@@ -34,18 +34,13 @@ export function CurrencyPanel({
   return (
     <article
       className={cn(
-        "flex min-h-0 flex-col justify-center p-[11px_16px] px-2.5 sm:px-4 md:p-[clamp(28px,5vh,64px)_clamp(24px,6vw,100px)_clamp(24px,4vh,48px)]",
+        "flex p-[11px_16px] px-2.5 sm:px-4 md:p-[clamp(28px,5vh,64px)_clamp(24px,6vw,100px)_clamp(24px,4vh,48px)]",
         role === "source"
           ? "bg-accent text-accent-foreground"
           : "bg-background text-foreground"
       )}
     >
-      <div
-        className={cn(
-          "flex min-h-0 w-full flex-col items-stretch justify-center gap-3 min-[760px]:grid min-[760px]:grid-cols-[minmax(200px,30%)_minmax(0,1fr)] min-[760px]:items-center min-[760px]:gap-[clamp(22px,5vw,90px)]",
-          !currency && !loading && "min-[760px]:flex"
-        )}
-      >
+      <div className="flex min-h-0 w-full items-center gap-1.5 md:gap-3">
         {loading ? (
           <CurrencyPanelSkeleton role={role} />
         ) : (

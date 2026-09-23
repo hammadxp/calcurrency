@@ -74,9 +74,10 @@ export function ConverterApp({ view }: ConverterAppProps) {
   }
 
   return (
-    <main className="min-h-svh bg-stone-50 dark:bg-slate-950">
+    <main className="min-h-svh bg-background">
       <AppHeader
         view={view}
+        showDonate={settings.showDonate}
         status={status}
         refreshing={refreshing}
         onRefresh={refreshRates}

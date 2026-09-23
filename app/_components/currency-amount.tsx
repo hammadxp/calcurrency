@@ -2,6 +2,7 @@ import {
   useEffect,
   useLayoutEffect,
   useRef,
+  useState,
   useSyncExternalStore,
   type KeyboardEvent,
 } from "react"
@@ -9,9 +10,9 @@ import type { Currency, Settings } from "@/types/currency"
 import { cn } from "@/lib/utils"
 import {
   amountSeparators,
+  deleteEditableAmount,
   formatAmount,
   formatEditableAmount,
-  normalizeAmount,
   parseEditableAmount,
 } from "@/utils/currency"
 
@@ -44,13 +45,48 @@ export function CurrencyAmount({
     getServerLocale
   )
   const inputRef = useRef<HTMLInputElement>(null)
-  const keepFocusRef = useRef(keepAmountFocus)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const symbolRef = useRef<HTMLSpanElement>(null)
+  const measureRef = useRef<HTMLSpanElement>(null)
   const caretRef = useRef<number | null>(null)
+  const [fontSize, setFontSize] = useState<number>()
   const displayAmount = formatEditableAmount(amount ?? "", locale)
+  const outputAmount =
+    amount && converted !== undefined && Number.isFinite(converted)
+      ? formatAmount(converted, currency.code, settings, undefined, locale)
+      : "0"
+  const visibleAmount = role === "source" ? displayAmount || "0" : outputAmount
 
   useLayoutEffect(() => {
-    keepFocusRef.current = keepAmountFocus
-  }, [keepAmountFocus])
+    const container = containerRef.current
+    const symbol = symbolRef.current
+    const measure = measureRef.current
+    if (!container || !symbol || !measure) return
+
+    function fitAmount() {
+      if (!container || !symbol || !measure) return
+      const maximum = Number.parseFloat(
+        window.getComputedStyle(measure).fontSize
+      )
+      const available =
+        container.clientWidth -
+        symbol.offsetWidth -
+        (role === "source" ? 14 : 4)
+      const width = measure.getBoundingClientRect().width
+      setFontSize(
+        Math.max(
+          12,
+          Math.min(maximum, (maximum * available) / Math.max(width, 1))
+        )
+      )
+    }
+
+    const observer = new ResizeObserver(fitAmount)
+    observer.observe(container)
+    fitAmount()
+    void document.fonts.ready.then(fitAmount)
+    return () => observer.disconnect()
+  }, [visibleAmount, currency.symbol, role])
 
   useEffect(() => {
     if (role === "source" && keepAmountFocus)
@@ -84,7 +120,7 @@ export function CurrencyAmount({
 
   function onAmountKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     const input = event.currentTarget
-    const { group, decimal } = amountSeparators(locale)
+    const { decimal } = amountSeparators(locale)
     const start = input.selectionStart ?? 0
     const end = input.selectionEnd ?? start
 
@@ -97,46 +133,48 @@ export function CurrencyAmount({
       return
     }
 
-    const groupBefore =
-      event.key === "Backspace" &&
-      start === end &&
-      input.value.slice(0, start).endsWith(group)
-    const groupAfter =
-      event.key === "Delete" &&
-      start === end &&
-      input.value.slice(start).startsWith(group)
-    if (!groupBefore && !groupAfter) return
+    if (event.key !== "Backspace" && event.key !== "Delete") return
 
     event.preventDefault()
-    const raw = normalizeAmount(amount ?? "")
-    const index = parseEditableAmount(
-      input.value.slice(0, start),
-      locale
-    ).length
-    const removeAt = groupBefore ? index - 1 : index
-    if (removeAt < 0 || removeAt >= raw.length) return
-    caretRef.current = removeAt
-    onChange?.(raw.slice(0, removeAt) + raw.slice(removeAt + 1))
+    const next = deleteEditableAmount(
+      input.value,
+      start,
+      end,
+      locale,
+      event.key
+    )
+    if (next.value === amount) return
+
+    caretRef.current = next.cursor
+    onChange?.(next.value)
   }
 
   return (
-    <div className="flex w-full min-w-0 items-center justify-end gap-2 overflow-visible">
+    <div
+      ref={containerRef}
+      className="relative flex w-full min-w-0 items-center justify-end gap-1 overflow-hidden font-[var(--font-amount),monospace]"
+    >
       <span
+        ref={symbolRef}
         className={cn(
-          "shrink-0 text-[15px] leading-none font-[var(--font-amount),monospace] sm:text-[clamp(15px,4.5vw,31px)] md:text-[clamp(26px,4.2vw,66px)]",
-          role === "target" && "text-slate-500 dark:text-slate-400"
+          "pt-6 text-[15px] leading-none sm:text-[clamp(15px,4.5vw,31px)] md:text-[clamp(26px,4.2vw,66px)]",
+          role === "target" && "text-muted-foreground"
         )}
       >
         {currency.symbol}
       </span>
 
       {role === "source" ? (
-        <span className="flex min-w-0 items-center">
+        <span
+          className="flex max-w-full min-w-0 items-baseline"
+          style={{ fontSize }}
+        >
           <input
-            className="peer bg-blue-400 pr-1 text-right text-[29px] leading-none tracking-tighter text-accent-foreground caret-transparent outline-none placeholder:text-accent-foreground/70 focus-visible:outline-none sm:text-[clamp(29px,9vw,62px)] md:text-[clamp(52px,8.4vw,132px)]"
+            className="peer block max-w-full min-w-0 border-0 p-0 text-right text-[29px] leading-none tracking-tighter text-accent-foreground caret-transparent outline-none placeholder:text-accent-foreground/70 focus-visible:outline-none sm:text-[clamp(29px,9vw,62px)] md:text-[clamp(52px,8.4vw,132px)]"
             ref={inputRef}
             style={{
               width: `${Math.max(displayAmount.length, 1)}ch`,
+              fontSize,
             }}
             inputMode="decimal"
             value={displayAmount}
@@ -147,36 +185,31 @@ export function CurrencyAmount({
               )
             }
             onKeyDown={onAmountKeyDown}
-            onBlur={() => {
-              window.setTimeout(() => {
-                if (keepFocusRef.current && document.hasFocus())
-                  inputRef.current?.focus({ preventScroll: true })
-              }, 0)
-            }}
             placeholder="0"
             aria-label={`Amount in ${currency.code}`}
           />
           <span
-            className="amount-caret h-[clamp(23px,7vw,48px)] w-1.5 shrink-0 rounded-full bg-rose-500 opacity-0 peer-focus:opacity-100 md:h-[clamp(32px,6.4vw,96px)]"
+            className="amount-caret ml-1.5 w-1.5 shrink-0 self-center rounded-full bg-rose-500 opacity-0 peer-focus:opacity-100"
             aria-hidden="true"
           />
         </span>
       ) : (
         <output
-          className="mr-3 text-center text-[29px] leading-none tracking-tighter sm:text-[clamp(29px,9vw,62px)] md:text-[clamp(52px,8.4vw,132px)]"
+          className="min-w-0 overflow-hidden pr-3 text-right text-[29px] leading-none tracking-tighter whitespace-nowrap sm:text-[clamp(29px,9vw,62px)] md:text-[clamp(52px,8.4vw,132px)]"
+          style={{ fontSize }}
           aria-label={`Converted amount in ${currency.code}`}
         >
-          {amount && converted !== undefined && Number.isFinite(converted)
-            ? formatAmount(
-                converted,
-                currency.code,
-                settings,
-                undefined,
-                locale
-              )
-            : "0"}
+          {outputAmount}
         </output>
       )}
+
+      <span
+        ref={measureRef}
+        className="pointer-events-none invisible absolute top-0 left-0 text-[29px] leading-none tracking-tighter whitespace-nowrap sm:text-[clamp(29px,9vw,62px)] md:text-[clamp(52px,8.4vw,132px)]"
+        aria-hidden="true"
+      >
+        {visibleAmount}
+      </span>
     </div>
   )
 }
