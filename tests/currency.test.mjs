@@ -39,15 +39,19 @@ test("provider date is displayed without a local timezone shift", () => {
   assert.equal(formatRateDate("2026-09-17"), "Sep 17, 2026")
 })
 
-test("rate timestamps use readable relative dates and 24-hour time", () => {
-  const now = new Date(2026, 8, 21, 12, 0)
+test("rate timestamps describe elapsed time", () => {
+  const now = new Date("2026-09-21T12:00:00.000Z")
   assert.equal(
-    formatRelativeTimestamp(new Date(2026, 8, 21, 0, 5).toISOString(), now),
-    "Today, 00:05"
+    formatRelativeTimestamp("2026-09-21T11:59:40.000Z", now),
+    "Just now"
   )
   assert.equal(
-    formatRelativeTimestamp(new Date(2026, 8, 20, 16, 30).toISOString(), now),
-    "Yesterday, 16:30"
+    formatRelativeTimestamp("2026-09-21T11:57:00.000Z", now),
+    "3 minutes ago"
+  )
+  assert.equal(
+    formatRelativeTimestamp("2026-09-14T12:00:00.000Z", now),
+    "a week ago"
   )
 })
 

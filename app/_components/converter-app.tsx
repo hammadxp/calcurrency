@@ -13,15 +13,19 @@ import { useRates } from "@/hooks/use-rates"
 import type { Settings, Slot, View } from "@/types/currency"
 import { normalizeAmount } from "@/utils/currency"
 
-export function ConverterApp() {
-  const [view, setView] = useState<View>("convert")
+type ConverterAppProps = {
+  view: View
+}
+
+export function ConverterApp({ view }: ConverterAppProps) {
   const [picker, setPicker] = useState<Slot | "rates" | null>(null)
   const [ratesBaseCode, setRatesBaseCode] = useState("USD")
   const [donateOpen, setDonateOpen] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const { pair, setPair, amount, setAmount, settings, setSettings } =
     useConverterPreferences()
-  const { rates, currencies, status } = useRates()
+  const { rates, currencies, loading, refreshing, refreshRates, status } =
+    useRates()
 
   const from =
     currencies.find((currency) => currency.code === pair.from) ?? null
@@ -44,11 +48,6 @@ export function ConverterApp() {
     setAmount((current) =>
       key === "delete" ? current.slice(0, -1) : normalizeAmount(current + key)
     )
-  }
-
-  function changeView(next: View) {
-    setView(next)
-    setMobileNavOpen(false)
   }
 
   function selectCurrency(code: string) {
@@ -79,9 +78,11 @@ export function ConverterApp() {
       <AppHeader
         view={view}
         status={status}
+        refreshing={refreshing}
+        onRefresh={refreshRates}
         mobileNavOpen={mobileNavOpen}
         onToggleNav={() => setMobileNavOpen((open) => !open)}
-        onView={changeView}
+        onNavigate={() => setMobileNavOpen(false)}
         onDonate={() => {
           setDonateOpen(true)
           setMobileNavOpen(false)
@@ -94,6 +95,7 @@ export function ConverterApp() {
           amount={amount}
           converted={converted}
           pairRate={pairRate}
+          loading={loading}
           settings={settings}
           onAmountChange={setAmount}
           onOpenFrom={() => setPicker("from")}
@@ -111,15 +113,10 @@ export function ConverterApp() {
           rates={rates}
           currencies={currencies}
           onOpenBase={() => setPicker("rates")}
-          onBack={() => changeView("convert")}
         />
       ) : null}
       {view === "settings" ? (
-        <SettingsView
-          settings={settings}
-          onToggle={toggleSetting}
-          onBack={() => changeView("convert")}
-        />
+        <SettingsView settings={settings} onToggle={toggleSetting} />
       ) : null}
       {picker ? (
         <CurrencyPicker

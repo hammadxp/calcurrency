@@ -8,6 +8,7 @@ type ConverterViewProps = {
   amount: string
   converted: number
   pairRate: number
+  loading: boolean
   settings: Settings
   onAmountChange: (value: string) => void
   onOpenFrom: () => void
@@ -21,6 +22,7 @@ export function ConverterView({
   amount,
   converted,
   pairRate,
+  loading,
   settings,
   onAmountChange,
   onOpenFrom,
@@ -29,12 +31,13 @@ export function ConverterView({
 }: ConverterViewProps) {
   return (
     <section
-      className="flex h-[calc(100svh-70px)] min-h-0 flex-col overflow-hidden max-[760px]:grid max-[760px]:h-[calc(100svh-58px)] max-[760px]:grid-rows-[minmax(0,1fr)_auto]"
+      className="flex h-[calc(100svh-70px)] min-h-0 flex-col overflow-hidden max-md:grid max-md:h-[calc(100svh-58px)] max-md:grid-rows-[minmax(0,1fr)_auto]"
       aria-label="Currency converter"
     >
       <div className="grid h-full min-h-0 w-full flex-1 grid-rows-[minmax(0,1fr)_minmax(0,1fr)] self-center">
         <CurrencyPanel
           currency={from}
+          loading={loading}
           role="source"
           amount={amount}
           settings={settings}
@@ -44,6 +47,7 @@ export function ConverterView({
 
         <CurrencyPanel
           currency={to}
+          loading={loading}
           role="target"
           converted={converted}
           from={from}

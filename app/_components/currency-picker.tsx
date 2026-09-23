@@ -75,7 +75,7 @@ export function CurrencyPicker({
             <X size={18} />
           </button>
         </div>
-        <label className="search-field mx-5 my-3 flex items-center gap-2.5 rounded-[7px] border border-stone-200 bg-stone-100 px-3.5 py-3 max-[760px]:mx-3.5 dark:border-slate-600 dark:bg-slate-900">
+        <label className="search-field mx-5 my-3 flex items-center gap-2.5 rounded-[7px] border border-stone-200 bg-stone-100 px-3.5 py-3 max-md:mx-3.5 dark:border-slate-600 dark:bg-slate-900">
           <Search size={17} />
           <input
             className="min-w-0 flex-1 border-0 bg-transparent text-[13px] text-slate-900 outline-none placeholder:text-slate-500 dark:text-stone-50"
@@ -89,7 +89,7 @@ export function CurrencyPicker({
             esc
           </kbd>
         </label>
-        <div className="max-h-[min(50vh,500px)] overflow-auto px-5 pb-2 max-[760px]:px-3.5">
+        <div className="max-h-[min(50vh,500px)] min-h-80 overflow-auto px-5 pb-2 max-md:min-h-64 max-md:px-3.5">
           {filtered.map((currency) => (
             <CurrencyOption
               key={currency.code}

@@ -31,37 +31,37 @@ export function formatRelativeTimestamp(value: string, now = new Date()) {
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return "recently"
 
-  const startOfToday = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate()
+  const elapsedSeconds = Math.max(
+    0,
+    Math.floor((now.getTime() - date.getTime()) / 1_000)
   )
-  const startOfDate = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate()
-  )
-  const dayDifference = Math.round(
-    (startOfToday.getTime() - startOfDate.getTime()) / 86_400_000
-  )
-  const dayLabel =
-    dayDifference === 0
-      ? "Today"
-      : dayDifference === 1
-        ? "Yesterday"
-        : new Intl.DateTimeFormat("en-US", {
-            month: "short",
-            day: "numeric",
-            year:
-              date.getFullYear() === now.getFullYear() ? undefined : "numeric",
-          }).format(date)
-  const time = new Intl.DateTimeFormat("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hourCycle: "h23",
-  }).format(date)
 
-  return `${dayLabel}, ${time}`
+  if (elapsedSeconds < 60) return "Just now"
+
+  const elapsedMinutes = Math.floor(elapsedSeconds / 60)
+  if (elapsedMinutes < 60)
+    return elapsedMinutes === 1
+      ? "a minute ago"
+      : `${elapsedMinutes} minutes ago`
+
+  const elapsedHours = Math.floor(elapsedMinutes / 60)
+  if (elapsedHours < 24)
+    return elapsedHours === 1 ? "an hour ago" : `${elapsedHours} hours ago`
+
+  const elapsedDays = Math.floor(elapsedHours / 24)
+  if (elapsedDays < 7)
+    return elapsedDays === 1 ? "a day ago" : `${elapsedDays} days ago`
+
+  const elapsedWeeks = Math.floor(elapsedDays / 7)
+  if (elapsedWeeks < 5)
+    return elapsedWeeks === 1 ? "a week ago" : `${elapsedWeeks} weeks ago`
+
+  const elapsedMonths = Math.floor(elapsedDays / 30)
+  if (elapsedMonths < 12)
+    return elapsedMonths === 1 ? "a month ago" : `${elapsedMonths} months ago`
+
+  const elapsedYears = Math.floor(elapsedDays / 365)
+  return elapsedYears === 1 ? "a year ago" : `${elapsedYears} years ago`
 }
 
 export function formatRateDate(value: string) {
