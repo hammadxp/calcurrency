@@ -31,7 +31,7 @@ export function ConverterView({
 }: ConverterViewProps) {
   return (
     <section
-      className="flex h-[calc(100svh-70px)] min-h-0 flex-col overflow-hidden max-md:grid max-md:h-[calc(100svh-58px)] max-md:grid-rows-[minmax(0,1fr)_auto]"
+      className="grid h-[calc(100svh-58px)] min-h-0 grid-rows-[minmax(0,1fr)_auto] overflow-hidden md:flex md:h-[calc(100svh-70px)] md:flex-col"
       aria-label="Currency converter"
     >
       <div className="grid h-full min-h-0 w-full flex-1 grid-rows-[minmax(0,1fr)_minmax(0,1fr)] self-center">

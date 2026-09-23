@@ -6,7 +6,7 @@ type MobileKeypadProps = { onKey: (key: string) => void }
 export function MobileKeypad({ onKey }: MobileKeypadProps) {
   return (
     <div
-      className="hidden h-[clamp(184px,33svh,256px)] grid-cols-3 grid-rows-4 gap-1.5 border-t border-stone-200 bg-stone-100 px-[13px] pt-2.5 pb-[max(9px,env(safe-area-inset-bottom))] max-md:grid dark:border-slate-700 dark:bg-slate-900"
+      className="grid h-[clamp(184px,33svh,256px)] grid-cols-3 grid-rows-4 gap-1.5 border-t border-stone-200 bg-stone-100 px-[13px] pt-2.5 pb-[max(9px,env(safe-area-inset-bottom))] md:hidden dark:border-slate-700 dark:bg-slate-900"
       aria-label="Amount keypad"
     >
       {KEYPAD_KEYS.map((key) => (

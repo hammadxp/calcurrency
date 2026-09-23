@@ -26,10 +26,10 @@ export function AppHeader({
   onDonate,
 }: AppHeaderProps) {
   return (
-    <header className="relative z-10 flex min-h-[70px] items-center gap-5 bg-slate-900 px-9 text-stone-50 max-md:min-h-[58px] max-md:gap-3 max-md:px-5">
+    <header className="relative z-10 flex min-h-[58px] items-center gap-3 bg-slate-900 px-5 text-stone-50 md:min-h-[70px] md:gap-5 md:px-9">
       <Link
         href="/"
-        className="flex items-center gap-2.5 border-0 bg-transparent p-0 text-base font-extrabold tracking-[-0.06em] text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 max-md:text-[13px]"
+        className="flex items-center gap-2.5 border-0 bg-transparent p-0 text-[13px] font-extrabold tracking-[-0.06em] text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:text-base"
         onClick={onNavigate}
         aria-label="Go to converter"
       >
@@ -42,13 +42,12 @@ export function AppHeader({
         status={status}
         refreshing={refreshing}
         onRefresh={onRefresh}
-        className="max-md:hidden"
+        className="hidden md:flex"
       />
       <nav
         className={cn(
-          "ml-auto flex items-center gap-2 max-md:hidden",
-          mobileNavOpen &&
-            "max-md:absolute max-md:top-[58px] max-md:right-2.5 max-md:z-20 max-md:m-0 max-md:flex max-md:w-68 max-md:max-w-[calc(100vw-20px)] max-md:flex-col max-md:items-stretch max-md:rounded-b-[9px] max-md:border max-md:border-slate-600 max-md:bg-slate-900 max-md:p-2.5 max-md:shadow-2xl"
+          "absolute top-[58px] right-2.5 z-20 m-0 hidden w-68 max-w-[calc(100vw-20px)] flex-col items-stretch gap-2 rounded-b-[9px] border border-slate-600 bg-slate-900 p-2.5 shadow-2xl md:static md:z-auto md:ml-auto md:flex md:w-auto md:max-w-none md:flex-row md:items-center md:rounded-none md:border-0 md:bg-transparent md:p-0 md:shadow-none",
+          mobileNavOpen && "flex"
         )}
         aria-label="Main navigation"
       >
@@ -56,12 +55,12 @@ export function AppHeader({
           status={status}
           refreshing={refreshing}
           onRefresh={onRefresh}
-          className="hidden px-1.5 pt-2 pb-3 max-md:flex"
+          className="px-1.5 pt-2 pb-3 md:hidden"
         />
         <ThemeToggle />
         <button
           type="button"
-          className="inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-rose-400/70 bg-rose-500/10 px-[15px] text-xs font-semibold text-rose-100 transition-colors hover:border-rose-400 hover:bg-rose-500 hover:text-white focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 max-md:justify-start"
+          className="inline-flex min-h-10 items-center justify-start gap-2 rounded-md border border-rose-400/70 bg-rose-500/10 px-[15px] text-xs font-semibold text-rose-100 transition-colors hover:border-rose-400 hover:bg-rose-500 hover:text-white focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:justify-center"
           onClick={onDonate}
         >
           <Heart size={16} fill="currentColor" /> <span>Donate</span>
@@ -69,7 +68,7 @@ export function AppHeader({
         <Link
           href="/rates"
           className={cn(
-            "inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-slate-600 bg-transparent px-[15px] text-xs font-semibold text-slate-300 transition-colors hover:border-emerald-100 hover:bg-emerald-100 hover:text-slate-900 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 max-md:justify-start",
+            "inline-flex min-h-10 items-center justify-start gap-2 rounded-md border border-slate-600 bg-transparent px-[15px] text-xs font-semibold text-slate-300 transition-colors hover:border-emerald-100 hover:bg-emerald-100 hover:text-slate-900 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:justify-center",
             view === "rates" &&
               "border-emerald-100 bg-emerald-100 text-slate-900"
           )}
@@ -81,7 +80,7 @@ export function AppHeader({
         <Link
           href="/settings"
           className={cn(
-            "inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-slate-600 bg-transparent px-[15px] text-xs font-semibold text-slate-300 transition-colors hover:border-emerald-100 hover:bg-emerald-100 hover:text-slate-900 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 max-md:justify-start",
+            "inline-flex min-h-10 items-center justify-start gap-2 rounded-md border border-slate-600 bg-transparent px-[15px] text-xs font-semibold text-slate-300 transition-colors hover:border-emerald-100 hover:bg-emerald-100 hover:text-slate-900 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:justify-center",
             view === "settings" &&
               "border-emerald-100 bg-emerald-100 text-slate-900"
           )}
@@ -93,7 +92,7 @@ export function AppHeader({
       </nav>
       <button
         type="button"
-        className="ml-auto hidden size-9 place-items-center rounded-md border border-slate-500 bg-transparent text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 max-md:grid"
+        className="ml-auto grid size-9 place-items-center rounded-md border border-slate-500 bg-transparent text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:hidden"
         onClick={onToggleNav}
         aria-expanded={mobileNavOpen}
         aria-label="Toggle navigation"

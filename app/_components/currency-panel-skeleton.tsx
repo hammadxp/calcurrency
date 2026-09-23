@@ -13,14 +13,14 @@ export function CurrencyPanelSkeleton({ role }: CurrencyPanelSkeletonProps) {
   return (
     <>
       <div
-        className="flex min-w-0 flex-col items-start gap-4.25 max-md:flex-row max-md:flex-wrap max-md:items-center max-md:gap-x-3 max-md:gap-y-2.5"
+        className="flex min-w-0 flex-row flex-wrap items-center gap-x-3 gap-y-2.5 md:flex-col md:flex-nowrap md:items-start md:gap-4.25"
         aria-hidden="true"
       >
         <span className={cn("h-12 w-21.5 animate-pulse rounded-md", surface)} />
-        <div className="flex min-w-0 flex-col items-start gap-2.5 max-md:flex-row max-md:items-center max-md:gap-1.75">
+        <div className="flex min-w-0 flex-row items-center gap-1.75 md:flex-col md:items-start md:gap-2.5">
           <span
             className={cn(
-              "h-11.5 w-21.5 animate-pulse rounded-md max-md:h-9",
+              "h-9 w-21.5 animate-pulse rounded-md md:h-11.5",
               surface
             )}
           />
@@ -29,7 +29,7 @@ export function CurrencyPanelSkeleton({ role }: CurrencyPanelSkeletonProps) {
         {role === "target" ? (
           <span
             className={cn(
-              "h-4 w-40 animate-pulse rounded-md max-md:w-full",
+              "h-4 w-full animate-pulse rounded-md md:w-40",
               surface
             )}
           />
@@ -40,14 +40,11 @@ export function CurrencyPanelSkeleton({ role }: CurrencyPanelSkeletonProps) {
         aria-hidden="true"
       >
         <span
-          className={cn(
-            "h-10 w-8 animate-pulse rounded-md max-md:h-6",
-            surface
-          )}
+          className={cn("h-6 w-8 animate-pulse rounded-md md:h-10", surface)}
         />
         <span
           className={cn(
-            "h-24 w-64 max-w-full animate-pulse rounded-md max-md:h-14 max-md:w-40 max-sm:h-9 max-sm:w-28",
+            "h-9 w-28 max-w-full animate-pulse rounded-md sm:h-14 sm:w-40 md:h-24 md:w-64",
             surface
           )}
         />

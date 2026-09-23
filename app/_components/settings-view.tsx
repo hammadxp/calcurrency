@@ -11,8 +11,8 @@ type SettingsViewProps = {
 
 export function SettingsView({ settings, onToggle }: SettingsViewProps) {
   return (
-    <section className="min-h-[calc(100svh-70px)] bg-stone-50 px-[max(5vw,28px)] pt-[38px] pb-[60px] text-slate-900 max-md:px-[17px] max-md:pt-[26px] max-md:pb-11 dark:bg-slate-950 dark:text-stone-50">
-      <div className="mx-auto mb-7 flex max-w-[1180px] items-center justify-between text-[13px] text-slate-500 max-md:mb-6 max-md:text-[9px] dark:text-slate-300">
+    <section className="min-h-[calc(100svh-70px)] bg-stone-50 px-[17px] pt-[26px] pb-11 text-slate-900 md:px-[max(5vw,28px)] md:pt-[38px] md:pb-[60px] dark:bg-slate-950 dark:text-stone-50">
+      <div className="mx-auto mb-6 flex max-w-[1180px] items-center justify-between text-[9px] text-slate-500 md:mb-7 md:text-[13px] dark:text-slate-300">
         <Link
           href="/"
           className="inline-flex items-center gap-1.5 rounded-md border border-stone-200 bg-stone-50 px-[13px] py-2.5 text-[13px] text-slate-900 transition-colors hover:bg-slate-900 hover:text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 dark:border-slate-700 dark:bg-slate-800 dark:text-stone-50"
@@ -25,7 +25,7 @@ export function SettingsView({ settings, onToggle }: SettingsViewProps) {
         <h1 className="max-w-[720px] font-sans text-[clamp(31px,3.4vw,48px)] leading-[1.1] font-bold tracking-[-0.05em]">
           Settings
         </h1>
-        <p className="mt-[9px] max-w-[650px] text-base leading-[1.5] text-slate-500 max-md:text-sm dark:text-slate-300">
+        <p className="mt-[9px] max-w-[650px] text-sm leading-[1.5] text-slate-500 md:text-base dark:text-slate-300">
           Choose how amounts appear. Your preferences stay in this browser.
         </p>
       </div>

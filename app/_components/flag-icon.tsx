@@ -19,7 +19,7 @@ export function FlagIcon({ currency, size = "medium" }: FlagIconProps) {
     <span
       className={cn(
         "grid shrink-0 place-items-center rounded bg-emerald-100 text-emerald-600",
-        size === "small" ? "h-5 w-7 rounded-lg" : "h-11.5 w-21.5 max-md:h-9"
+        size === "small" ? "h-5 w-7 rounded-lg" : "h-9 w-21.5 md:h-11.5"
       )}
       aria-hidden="true"
     >
@@ -42,7 +42,7 @@ function FlagImage({ flag, size }: FlagImageProps) {
       <span
         className={cn(
           "grid shrink-0 place-items-center rounded bg-emerald-100 text-emerald-600",
-          size === "small" ? "h-5 w-7 rounded-lg" : "h-11.5 w-21.5 max-md:h-9"
+          size === "small" ? "h-5 w-7 rounded-lg" : "h-9 w-21.5 md:h-11.5"
         )}
         aria-hidden="true"
       >
@@ -57,7 +57,7 @@ function FlagImage({ flag, size }: FlagImageProps) {
         "relative block shrink-0 overflow-hidden rounded-md",
         size === "small"
           ? "h-5 w-7 rounded-[4px]"
-          : "h-11.5 w-21.5 max-w-21.5 max-md:h-9"
+          : "h-9 w-21.5 max-w-21.5 md:h-11.5"
       )}
       aria-hidden="true"
     >
