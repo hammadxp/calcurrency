@@ -97,6 +97,7 @@ export function ConverterApp({ view }: ConverterAppProps) {
           pairRate={pairRate}
           loading={loading}
           settings={settings}
+          keepAmountFocus={!picker && !donateOpen}
           onAmountChange={setAmount}
           onOpenFrom={() => setPicker("from")}
           onOpenTo={() => setPicker("to")}

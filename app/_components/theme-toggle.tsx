@@ -21,12 +21,14 @@ export function ThemeToggle() {
     <Button
       type="button"
       variant="header"
-      size="icon-lg"
+      size="lg"
+      className="justify-start md:justify-center md:px-3"
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label={isDark ? "Use light theme" : "Use dark theme"}
       title={isDark ? "Use light theme" : "Use dark theme"}
     >
       {isDark ? <Sun /> : <Moon />}
+      <span className="md:hidden">{isDark ? "Light theme" : "Dark theme"}</span>
     </Button>
   )
 }

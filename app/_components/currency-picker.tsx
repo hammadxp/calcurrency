@@ -1,6 +1,6 @@
 "use client"
 
-import { useId, useRef, useState } from "react"
+import { useDeferredValue, useId, useMemo, useRef, useState } from "react"
 import { Search, X } from "lucide-react"
 import { CurrencyOption } from "./currency-option"
 import { useModalFocus } from "@/hooks/use-modal-focus"
@@ -15,6 +15,10 @@ type CurrencyPickerProps = {
   onClose: () => void
 }
 
+const ROW_HEIGHT = 64
+const VISIBLE_ROWS = 12
+const OVERSCAN = 3
+
 export function CurrencyPicker({
   slot,
   selectedCode,
@@ -24,23 +28,31 @@ export function CurrencyPicker({
   onClose,
 }: CurrencyPickerProps) {
   const [search, setSearch] = useState("")
+  const [scrollTop, setScrollTop] = useState(0)
   const searchRef = useRef<HTMLInputElement>(null)
+  const listRef = useRef<HTMLDivElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
   const titleId = useId()
-  const query = search.trim().toLowerCase()
-  const filtered = query
-    ? currencies.filter(
-        (currency) =>
-          currency.code.toLowerCase().includes(query) ||
-          currency.name.toLowerCase().includes(query)
-      )
-    : currencies
+  const query = useDeferredValue(search.trim().toLowerCase())
+  const filtered = useMemo(
+    () =>
+      query
+        ? currencies.filter(
+            (currency) =>
+              currency.code.toLowerCase().includes(query) ||
+              currency.name.toLowerCase().includes(query)
+          )
+        : currencies,
+    [currencies, query]
+  )
+  const start = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT) - OVERSCAN)
+  const end = Math.min(filtered.length, start + VISIBLE_ROWS + OVERSCAN * 2)
 
   useModalFocus(dialogRef, searchRef, onClose)
 
   return (
     <div
-      className="fixed inset-0 z-20 grid place-items-center bg-slate-900/60 p-5 backdrop-blur-[8px]"
+      className="fixed inset-0 z-20 grid place-items-center bg-slate-900/60 p-5"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose()
       }}
@@ -81,7 +93,11 @@ export function CurrencyPicker({
             className="min-w-0 flex-1 border-0 bg-transparent text-[13px] text-slate-900 outline-none placeholder:text-slate-500 dark:text-stone-50"
             ref={searchRef}
             value={search}
-            onChange={(event) => setSearch(event.target.value)}
+            onChange={(event) => {
+              setSearch(event.target.value)
+              listRef.current?.scrollTo(0, 0)
+              setScrollTop(0)
+            }}
             placeholder="Search by name or code"
             aria-label="Search currencies"
           />
@@ -89,8 +105,13 @@ export function CurrencyPicker({
             esc
           </kbd>
         </label>
-        <div className="max-h-[min(50vh,500px)] min-h-64 overflow-auto px-3.5 pb-2 md:min-h-80 md:px-5">
-          {filtered.map((currency) => (
+        <div
+          ref={listRef}
+          className="max-h-[min(50vh,500px)] min-h-64 overflow-auto px-3.5 pb-2 md:min-h-80 md:px-5"
+          onScroll={(event) => setScrollTop(event.currentTarget.scrollTop)}
+        >
+          <div style={{ height: start * ROW_HEIGHT }} aria-hidden="true" />
+          {filtered.slice(start, end).map((currency) => (
             <CurrencyOption
               key={currency.code}
               currency={currency}
@@ -98,6 +119,10 @@ export function CurrencyPicker({
               onSelect={onSelect}
             />
           ))}
+          <div
+            style={{ height: (filtered.length - end) * ROW_HEIGHT }}
+            aria-hidden="true"
+          />
           {filtered.length === 0 ? (
             <p className="px-6 py-4 text-[13px] text-slate-500 dark:text-slate-300">
               No currencies found.

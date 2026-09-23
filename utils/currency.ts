@@ -4,13 +4,15 @@ export function formatAmount(
   value: number,
   code: string,
   settings: Settings,
-  maximumFractionDigits?: number
+  maximumFractionDigits?: number,
+  locale = "en-US"
 ) {
   if (!Number.isFinite(value)) return "—"
   const decimals = settings.decimals
     ? (maximumFractionDigits ?? (["JPY", "KRW"].includes(code) ? 0 : 2))
     : 0
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat(locale, {
+    numberingSystem: "latn",
     maximumFractionDigits: decimals,
     minimumFractionDigits:
       decimals > 0 && maximumFractionDigits === undefined && !settings.compact
@@ -82,6 +84,52 @@ export function normalizeAmount(value: string) {
   return dot === -1
     ? digits
     : digits.slice(0, dot + 1) + digits.slice(dot + 1).replaceAll(".", "")
+}
+
+type AmountLocale = {
+  group: string
+  decimal: string
+  integerFormatter: Intl.NumberFormat
+}
+
+const amountLocales = new Map<string, AmountLocale>()
+
+export function amountSeparators(locale: string) {
+  const cached = amountLocales.get(locale)
+  if (cached) return cached
+
+  const integerFormatter = new Intl.NumberFormat(locale, {
+    numberingSystem: "latn",
+    maximumFractionDigits: 0,
+  })
+  const parts = new Intl.NumberFormat(locale, {
+    numberingSystem: "latn",
+  }).formatToParts(1234.5)
+  const next = {
+    group: parts.find((part) => part.type === "group")?.value ?? ",",
+    decimal: parts.find((part) => part.type === "decimal")?.value ?? ".",
+    integerFormatter,
+  }
+  amountLocales.set(locale, next)
+  return next
+}
+
+export function formatEditableAmount(value: string, locale: string) {
+  if (!value) return ""
+  const { decimal, integerFormatter } = amountSeparators(locale)
+  const [integer, fraction] = value.split(".")
+  const leadingZeros = integer.match(/^0+/)?.[0] ?? ""
+  const significant = integer.slice(leadingZeros.length)
+  const grouped = significant
+    ? leadingZeros + integerFormatter.format(BigInt(significant))
+    : integer
+  return fraction === undefined ? grouped : `${grouped}${decimal}${fraction}`
+}
+
+export function parseEditableAmount(value: string, locale: string) {
+  const { group, decimal } = amountSeparators(locale)
+  const ungrouped = value.split(group).join("")
+  return normalizeAmount(ungrouped.replace(decimal, "."))
 }
 
 export function isRateData(value: unknown): value is RateData {

@@ -10,6 +10,7 @@ type ConverterViewProps = {
   pairRate: number
   loading: boolean
   settings: Settings
+  keepAmountFocus: boolean
   onAmountChange: (value: string) => void
   onOpenFrom: () => void
   onOpenTo: () => void
@@ -24,6 +25,7 @@ export function ConverterView({
   pairRate,
   loading,
   settings,
+  keepAmountFocus,
   onAmountChange,
   onOpenFrom,
   onOpenTo,
@@ -41,6 +43,7 @@ export function ConverterView({
           role="source"
           amount={amount}
           settings={settings}
+          keepAmountFocus={keepAmountFocus}
           onOpen={onOpenFrom}
           onChange={onAmountChange}
         />
@@ -49,6 +52,7 @@ export function ConverterView({
           currency={to}
           loading={loading}
           role="target"
+          amount={amount}
           converted={converted}
           from={from}
           pairRate={pairRate}

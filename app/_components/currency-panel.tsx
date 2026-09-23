@@ -13,6 +13,7 @@ type CurrencyPanelProps = {
   from?: Currency | null
   pairRate?: number
   settings: Settings
+  keepAmountFocus?: boolean
   onOpen: () => void
   onChange?: (value: string) => void
 }
@@ -26,6 +27,7 @@ export function CurrencyPanel({
   from,
   pairRate,
   settings,
+  keepAmountFocus,
   onOpen,
   onChange,
 }: CurrencyPanelProps) {
@@ -34,14 +36,14 @@ export function CurrencyPanel({
       className={cn(
         "flex min-h-0 flex-col justify-center p-[11px_16px] px-2.5 sm:px-4 md:p-[clamp(28px,5vh,64px)_clamp(24px,6vw,100px)_clamp(24px,4vh,48px)]",
         role === "source"
-          ? "bg-emerald-600 text-emerald-50 dark:bg-emerald-800"
-          : "bg-stone-50 text-slate-800 dark:bg-slate-900"
+          ? "bg-accent text-accent-foreground"
+          : "bg-background text-foreground"
       )}
     >
       <div
         className={cn(
           "flex min-h-0 w-full flex-col items-stretch justify-center gap-3 min-[760px]:grid min-[760px]:grid-cols-[minmax(200px,30%)_minmax(0,1fr)] min-[760px]:items-center min-[760px]:gap-[clamp(22px,5vw,90px)]",
-          !currency && "min-[760px]:flex"
+          !currency && !loading && "min-[760px]:flex"
         )}
       >
         {loading ? (
@@ -63,6 +65,7 @@ export function CurrencyPanel({
                 amount={amount}
                 converted={converted}
                 settings={settings}
+                keepAmountFocus={keepAmountFocus}
                 onChange={onChange}
               />
             ) : null}

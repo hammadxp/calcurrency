@@ -2,11 +2,13 @@ import assert from "node:assert/strict"
 import test from "node:test"
 import {
   formatAmount,
+  formatEditableAmount,
   formatRateDate,
   formatRate,
   formatRelativeTimestamp,
   isRateData,
   normalizeAmount,
+  parseEditableAmount,
 } from "../utils/currency.ts"
 
 const settings = { decimals: true, compact: false, remember: true }
@@ -14,6 +16,17 @@ const settings = { decimals: true, compact: false, remember: true }
 test("amount input keeps one decimal separator", () => {
   assert.equal(normalizeAmount("12.3.4x"), "12.34")
   assert.equal(normalizeAmount("0.05"), "0.05")
+})
+
+test("editable amounts use locale separators without changing stored digits", () => {
+  assert.equal(formatEditableAmount("1234567.80", "en-US"), "1,234,567.80")
+  assert.equal(parseEditableAmount("1,234,567.80", "en-US"), "1234567.80")
+  assert.equal(formatEditableAmount("1234567.80", "de-DE"), "1.234.567,80")
+  assert.equal(parseEditableAmount("1.234.567,80", "de-DE"), "1234567.80")
+  assert.equal(formatEditableAmount("12.", "de-DE"), "12,")
+  assert.equal(formatEditableAmount("1234567.80", "en-IN"), "12,34,567.80")
+  assert.equal(formatEditableAmount("", "de-DE"), "")
+  assert.equal(formatAmount(1234.56, "EUR", settings, undefined, "de-DE"), "1.234,56")
 })
 
 test("display settings affect converted amounts", () => {

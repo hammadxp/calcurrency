@@ -18,7 +18,7 @@ export function CurrencyOption({
     <button
       type="button"
       className={cn(
-        "flex w-full items-center gap-[13px] rounded-md border-0 border-b border-stone-200 bg-transparent px-2.5 py-3 text-left text-slate-900 transition-colors hover:bg-emerald-100 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 dark:border-slate-700 dark:text-stone-50 dark:hover:bg-emerald-950",
+        "flex h-16 w-full items-center gap-3 overflow-hidden rounded-md border-0 border-b border-stone-200 bg-transparent px-2.5 text-left text-slate-900 transition-colors hover:bg-emerald-100 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 dark:border-slate-700 dark:text-stone-50 dark:hover:bg-emerald-950",
         selected && "bg-emerald-100 dark:bg-emerald-950"
       )}
       onClick={() => onSelect(currency.code)}

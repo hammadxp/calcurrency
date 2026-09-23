@@ -7,7 +7,7 @@ type CurrencyPanelSkeletonProps = {
 export function CurrencyPanelSkeleton({ role }: CurrencyPanelSkeletonProps) {
   const surface =
     role === "source"
-      ? "bg-emerald-50/30"
+      ? "bg-slate-900/15"
       : "bg-slate-300/60 dark:bg-slate-700/70"
 
   return (

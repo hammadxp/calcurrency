@@ -1,8 +1,9 @@
-import Link from "next/link"
-import { ArrowLeftRight, Heart, Menu, Settings, TrendingUp } from "lucide-react"
-import { ThemeToggle } from "./theme-toggle"
 import { cn } from "@/lib/utils"
 import type { View } from "@/types/currency"
+import { Heart, Menu, Settings, TrendingUp } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { ThemeToggle } from "./theme-toggle"
 
 type AppHeaderProps = {
   view: View
@@ -29,13 +30,16 @@ export function AppHeader({
     <header className="relative z-10 flex min-h-[58px] items-center gap-3 bg-slate-900 px-5 text-stone-50 md:min-h-[70px] md:gap-5 md:px-9">
       <Link
         href="/"
-        className="flex items-center gap-2.5 border-0 bg-transparent p-0 text-[13px] font-extrabold tracking-[-0.06em] text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:text-base"
+        className="flex items-center gap-1.5 border-0 bg-transparent p-0 text-[13px] font-extrabold tracking-[-0.06em] text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:text-base"
         onClick={onNavigate}
         aria-label="Go to converter"
       >
-        <span className="grid size-[30px] place-items-center rounded-[7px] bg-rose-500 text-stone-50">
-          <ArrowLeftRight size={18} strokeWidth={2.6} />
-        </span>
+        <Image
+          src="/icon.png"
+          alt="Logo of Calcurrency app"
+          width={36}
+          height={36}
+        />
         <span>calcurrency</span>
       </Link>
       <RateStatus
