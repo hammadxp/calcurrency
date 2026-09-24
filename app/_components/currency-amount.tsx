@@ -176,87 +176,73 @@ export function CurrencyAmount({
   return (
     <div
       ref={containerRef}
-      className="relative w-full min-w-0 overflow-hidden"
-      style={{ fontFamily: "var(--font-amount), monospace" }}
+      className="relative w-full min-w-0 text-foreground/80"
+      style={{ fontFamily: "var(--font-sans), sans-serif" }}
     >
-      <div
-        className={cn(
-          "flex w-full min-w-0 items-baseline justify-end leading-none",
-          AMOUNT_TEXT_SIZE
-        )}
-        style={{ fontSize, columnGap: "0.05em" }}
-      >
-        <span className="shrink-0 leading-none">{currency.symbol}</span>
-
-        {role === "source" ? (
-          <span className="inline-grid max-w-full min-w-0 items-baseline">
-            <span
-              className="invisible col-start-1 row-start-1 tracking-tighter whitespace-nowrap"
-              aria-hidden="true"
-            >
-              {displayAmount || "0"}
-            </span>
-            <input
-              className="peer col-start-1 row-start-1 block w-full min-w-0 border-0 bg-transparent p-0 text-right leading-none tracking-tighter text-inherit caret-transparent outline-none placeholder:text-current/70 focus-visible:outline-none"
-              ref={inputRef}
-              inputMode="decimal"
-              value={displayAmount}
-              onChange={(event) =>
-                changeAmount(
-                  event.target.value,
-                  event.target.selectionStart ?? event.target.value.length
-                )
-              }
-              onKeyDown={onAmountKeyDown}
-              onBlur={() => {
-                requestAnimationFrame(() => {
-                  if (
-                    keepAmountFocus &&
-                    window.matchMedia("(pointer: fine)").matches &&
-                    document.activeElement === document.body
-                  )
-                    inputRef.current?.focus({ preventScroll: true })
-                })
-              }}
-              placeholder="0"
-              aria-label={`Amount in ${currency.code}`}
-            />
-            <span
-              className="amount-caret col-start-2 row-start-1 shrink-0 self-center rounded-full bg-rose-500 opacity-0 peer-focus:opacity-100"
-              style={{ marginLeft: "0.07em", width: "0.05em" }}
-              aria-hidden="true"
-            />
+      <div className="flex w-full min-w-0 justify-end">
+        <div
+          className={cn(
+            "inline-flex w-max max-w-full min-w-0 items-baseline gap-1 leading-none whitespace-nowrap",
+            AMOUNT_TEXT_SIZE
+          )}
+          style={{ fontSize }}
+        >
+          <span className="shrink-0 text-foreground/50" aria-hidden="true">
+            {currency.symbol}
           </span>
-        ) : (
-          <output
-            className="min-w-0 overflow-hidden text-right tracking-tighter whitespace-nowrap"
-            style={{ paddingRight: "0.12em" }}
-            aria-label={`Converted amount in ${currency.code}`}
-          >
-            {outputAmount}
-          </output>
-        )}
+
+          {role === "source" ? (
+            <span className="relative inline-block shrink-0 tracking-tighter">
+              <span className="invisible" aria-hidden="true">
+                {visibleAmount}
+              </span>
+              <input
+                className="absolute inset-0 block size-full min-w-0 border-0 bg-transparent p-0 text-right leading-none tracking-tighter text-inherit caret-rose-500 outline-none placeholder:text-current focus-visible:outline-none"
+                ref={inputRef}
+                inputMode="decimal"
+                value={displayAmount}
+                onChange={(event) =>
+                  changeAmount(
+                    event.target.value,
+                    event.target.selectionStart ?? event.target.value.length
+                  )
+                }
+                onKeyDown={onAmountKeyDown}
+                onBlur={() => {
+                  requestAnimationFrame(() => {
+                    if (
+                      keepAmountFocus &&
+                      window.matchMedia("(pointer: fine)").matches &&
+                      document.activeElement === document.body
+                    )
+                      inputRef.current?.focus({ preventScroll: true })
+                  })
+                }}
+                placeholder="0"
+                aria-label={`Amount in ${currency.code}`}
+              />
+            </span>
+          ) : (
+            <output
+              className="min-w-0 overflow-hidden text-right tracking-tighter"
+              aria-label={`Converted amount in ${currency.code}`}
+            >
+              {outputAmount}
+            </output>
+          )}
+        </div>
       </div>
 
       <span
         ref={measureRef}
         className={cn(
-          "pointer-events-none invisible absolute top-0 left-0 inline-flex w-max items-baseline leading-none whitespace-nowrap",
+          "pointer-events-none invisible absolute top-0 left-0 inline-flex w-max items-baseline gap-1 leading-none whitespace-nowrap",
           AMOUNT_TEXT_SIZE
         )}
-        style={{ columnGap: "0.05em" }}
         aria-hidden="true"
       >
         <span>{currency.symbol}</span>
-        <span
-          className="tracking-tighter"
-          style={role === "target" ? { paddingRight: "0.12em" } : undefined}
-        >
-          {visibleAmount}
-        </span>
-        {role === "source" ? (
-          <span style={{ marginLeft: "0.07em", width: "0.05em" }} />
-        ) : null}
+        <span className="tracking-tighter">{visibleAmount}</span>
       </span>
     </div>
   )

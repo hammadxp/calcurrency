@@ -184,28 +184,8 @@
 }
 
 @layer components {
-  .amount-caret {
-    height: 0.72em;
-    opacity: 0;
-  }
-
-  .peer:focus + .amount-caret {
-    animation: amount-caret-blink 1s step-end infinite;
-  }
-
   .search-field:has(input:focus-visible) {
     outline: 3px solid oklch(0.747 0.134 35);
     outline-offset: 2px;
-  }
-
-  @keyframes amount-caret-blink {
-    0%,
-    100% {
-      opacity: 1;
-    }
-
-    50% {
-      opacity: 0;
-    }
   }
 }
