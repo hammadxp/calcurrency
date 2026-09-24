@@ -20,7 +20,7 @@ export function CurrencyControl({
   onOpen,
 }: CurrencyControlProps) {
   return (
-    <div className="flex min-w-0 items-center gap-3">
+    <div className="order-2 flex min-w-0 flex-1 items-center gap-2 sm:flex-none sm:gap-3">
       <Button
         variant="secondary"
         size="sm"
@@ -29,18 +29,23 @@ export function CurrencyControl({
       >
         {currency.code} <ChevronDown data-icon="inline-end" />
       </Button>
-      <div className="flex min-w-0 flex-col items-start gap-1">
+      <div className="flex min-w-0 items-center gap-2 sm:flex-col sm:items-start sm:gap-1">
         <FlagIcon currency={currency} size="small" />
-        <span className="max-w-32 truncate text-xs font-medium opacity-75 sm:max-w-48">
-          {currency.name}
-        </span>
-        {isSource ? (
-          <span className="text-xs font-semibold opacity-75">Base amount</span>
-        ) : source ? (
-          <span className="text-xs opacity-75">
-            1 {source.code} = {formatRate(rate)} {currency.code}
+        <div className="flex min-w-0 flex-col gap-0.5 sm:gap-1">
+          <span className="truncate text-xs font-medium opacity-75 sm:max-w-48">
+            <span className="sm:hidden">{currency.code}</span>
+            <span className="hidden sm:inline">{currency.name}</span>
           </span>
-        ) : null}
+          {isSource ? (
+            <span className="truncate text-xs font-semibold opacity-75">
+              Base amount
+            </span>
+          ) : source ? (
+            <span className="truncate text-xs opacity-75">
+              1 {source.code} = {formatRate(rate)} {currency.code}
+            </span>
+          ) : null}
+        </div>
       </div>
     </div>
   )

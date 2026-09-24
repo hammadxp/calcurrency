@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import type { View } from "@/types/currency"
 import { Heart, Menu, Settings, TrendingUp } from "lucide-react"
@@ -29,6 +31,36 @@ export function AppHeader({
   onNavigate,
   onDonate,
 }: AppHeaderProps) {
+  const navRef = useRef<HTMLElement>(null)
+  const toggleRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (!mobileNavOpen) return
+
+    function closeOnOutsidePointer(event: globalThis.PointerEvent) {
+      const target = event.target
+      if (
+        target instanceof Node &&
+        !navRef.current?.contains(target) &&
+        !toggleRef.current?.contains(target)
+      ) {
+        onNavigate()
+      }
+    }
+
+    function closeOnEscape(event: globalThis.KeyboardEvent) {
+      if (event.key === "Escape") onNavigate()
+    }
+
+    document.addEventListener("pointerdown", closeOnOutsidePointer)
+    document.addEventListener("keydown", closeOnEscape)
+
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsidePointer)
+      document.removeEventListener("keydown", closeOnEscape)
+    }
+  }, [mobileNavOpen, onNavigate])
+
   return (
     <header className="relative z-10 flex min-h-[58px] shrink-0 items-center gap-3 bg-slate-900 px-5 text-stone-50 md:min-h-[70px] md:gap-5 md:px-9 dark:bg-neutral-900">
       <Link
@@ -52,6 +84,8 @@ export function AppHeader({
         className="hidden md:flex"
       />
       <nav
+        id="mobile-navigation"
+        ref={navRef}
         className={cn(
           "absolute top-[58px] right-2.5 z-20 m-0 hidden w-68 max-w-[calc(100vw-20px)] flex-col items-stretch gap-2 rounded-b-[9px] border border-slate-600 bg-slate-900 p-2.5 shadow-2xl md:static md:z-auto md:ml-auto md:flex md:w-auto md:max-w-none md:flex-row md:items-center md:rounded-none md:border-0 md:bg-transparent md:p-0 md:shadow-none dark:border-neutral-600 dark:bg-neutral-900 md:dark:bg-transparent",
           mobileNavOpen && "flex"
@@ -105,15 +139,19 @@ export function AppHeader({
           className="px-1.5 pt-2 pb-3 md:hidden"
         />
       </nav>
-      <button
+      <Button
+        ref={toggleRef}
         type="button"
-        className="ml-auto grid size-9 place-items-center rounded-md border border-slate-500 bg-transparent text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:hidden dark:border-neutral-500"
+        variant="header"
+        size="icon"
+        className="ml-auto rounded-md text-stone-50 md:hidden dark:border-neutral-500"
         onClick={onToggleNav}
         aria-expanded={mobileNavOpen}
+        aria-controls="mobile-navigation"
         aria-label="Toggle navigation"
       >
-        <Menu size={19} />
-      </button>
+        <Menu />
+      </Button>
     </header>
   )
 }

@@ -1,8 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
-import { ArrowLeft, ChevronDown, Search } from "lucide-react"
+import { ChevronDown, Search } from "lucide-react"
 import { FlagIcon } from "./flag-icon"
 import { RateRow } from "./rate-row"
 import type { Currency } from "@/types/currency"
@@ -33,17 +32,8 @@ export function RatesView({
 
   return (
     <section className="min-h-[calc(100svh-70px)] bg-background px-4.25 pt-6.5 pb-11 text-foreground md:px-[max(5vw,28px)] md:pt-9.5 md:pb-15">
-      <div className="mx-auto mb-6 flex max-w-295 items-center justify-between text-[9px] text-slate-500 md:mb-7 md:text-[13px] dark:text-neutral-300">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 rounded-md border border-stone-200 bg-stone-50 px-3.25 py-2.5 text-[13px] text-slate-900 transition-colors hover:bg-slate-900 hover:text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-stone-50"
-        >
-          <ArrowLeft size={16} /> Converter
-        </Link>
-        <span>Indicative reference rates</span>
-      </div>
       <div className="mx-auto max-w-295">
-        <h1 className="max-w-180 font-sans text-[clamp(31px,3.4vw,48px)] leading-[1.1] font-bold tracking-tighter">
+        <h1 className="max-w-180 font-sans text-3xl leading-tight font-bold tracking-tighter md:text-5xl">
           Exchange rates
         </h1>
         <p className="mt-2.25 max-w-162.5 text-sm leading-normal text-slate-500 md:text-base dark:text-neutral-300">

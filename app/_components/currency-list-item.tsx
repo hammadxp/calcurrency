@@ -82,7 +82,7 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
   return (
     <article
       className={cn(
-        "flex min-h-38 min-w-0 items-center gap-2 rounded-xl border border-border/60 px-2 py-4 text-foreground shadow-sm sm:min-h-26 sm:gap-3 sm:px-4",
+        "flex min-h-36 min-w-0 flex-wrap items-center gap-2 rounded-xl border border-border/60 px-2 py-4 text-foreground shadow-sm sm:min-h-26 sm:flex-nowrap sm:gap-3 sm:px-4",
         COLOR_CLASSES[color],
         dragging && "opacity-55",
         dropTarget && "ring-2 ring-primary"
@@ -92,7 +92,7 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
       <Button
         variant="ghost"
         size="icon-sm"
-        className="cursor-grab touch-none active:cursor-grabbing"
+        className="order-1 cursor-grab touch-none active:cursor-grabbing"
         aria-label={`Drag to reorder ${code}. Use arrow keys to move it up or down.`}
         onPointerDown={onDragStart}
         onPointerMove={onDragMove}
@@ -103,56 +103,54 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
         <GripVertical />
       </Button>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        {currency ? (
-          <>
-            <CurrencyControl
+      {currency ? (
+        <>
+          <CurrencyControl
+            currency={currency}
+            source={source}
+            isSource={isSource}
+            rate={rate}
+            onOpen={onOpen}
+          />
+          <div className="order-4 w-full min-w-0 sm:order-3 sm:w-auto sm:flex-1 sm:basis-1/2">
+            <CurrencyAmount
               currency={currency}
-              source={source}
-              isSource={isSource}
-              rate={rate}
-              onOpen={onOpen}
+              role={isSource ? "source" : "target"}
+              amount={amount}
+              converted={converted}
+              settings={settings}
+              keepAmountFocus={keepAmountFocus && isSource}
+              onChange={onChange}
+              onCalculatorKey={onCalculatorKey}
+              awaitingNext={awaitingNext}
             />
-            <div className="min-w-0 flex-1 sm:basis-1/2">
-              <CurrencyAmount
-                currency={currency}
-                role={isSource ? "source" : "target"}
-                amount={amount}
-                converted={converted}
-                settings={settings}
-                keepAmountFocus={keepAmountFocus && isSource}
-                onChange={onChange}
-                onCalculatorKey={onCalculatorKey}
-                awaitingNext={awaitingNext}
-              />
-            </div>
-          </>
-        ) : (
-          <div
-            className="flex w-full items-center justify-between gap-4"
-            role="status"
-            aria-label={
-              loading ? `Loading ${code}` : `Rates unavailable for ${code}`
-            }
-          >
-            {loading ? (
-              <span
-                className="h-7 w-12 animate-pulse rounded-md bg-foreground/10"
-                aria-hidden="true"
-              />
-            ) : (
-              <span className="font-bold">{code}</span>
-            )}
-            {loading ? (
-              <span className="h-9 w-28 animate-pulse rounded-md bg-foreground/10" />
-            ) : (
-              <span className="text-xs">
-                Rates unavailable. Refresh from the menu.
-              </span>
-            )}
           </div>
-        )}
-      </div>
+        </>
+      ) : (
+        <div
+          className="order-2 flex min-w-0 flex-1 items-center justify-between gap-4"
+          role="status"
+          aria-label={
+            loading ? `Loading ${code}` : `Rates unavailable for ${code}`
+          }
+        >
+          {loading ? (
+            <span
+              className="h-7 w-12 animate-pulse rounded-md bg-foreground/10"
+              aria-hidden="true"
+            />
+          ) : (
+            <span className="font-bold">{code}</span>
+          )}
+          {loading ? (
+            <span className="h-9 w-28 animate-pulse rounded-md bg-foreground/10" />
+          ) : (
+            <span className="text-xs">
+              Rates unavailable. Refresh from the menu.
+            </span>
+          )}
+        </div>
+      )}
 
       <Menu.Root modal={false}>
         <Menu.Trigger
@@ -160,6 +158,7 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
             <Button
               variant="secondary"
               size="icon-sm"
+              className="order-3 sm:order-4"
               aria-label={`Options for ${code}`}
             />
           }

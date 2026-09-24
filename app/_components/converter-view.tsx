@@ -106,16 +106,16 @@ export function ConverterView({
     >
       <div className="min-h-0 flex-1 overflow-y-auto px-3 py-5 sm:px-6 md:py-8">
         <div className="mx-auto flex max-w-5xl flex-col gap-4">
-          <div className="flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <h1 className="font-sans text-2xl font-bold tracking-tight sm:text-3xl">
+          <div className="flex flex-col items-stretch gap-4 md:flex-row md:items-end md:justify-between">
+            <div className="px-2 sm:px-0">
+              <h1 className="font-sans text-3xl leading-tight font-bold tracking-tight md:text-5xl">
                 Your currencies
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground md:text-base">
                 Enter an amount in the first row. Drag to change the order.
               </p>
             </div>
-            <div className="ml-auto flex w-full items-center justify-between gap-3 sm:w-auto">
+            <div className="flex w-full items-center justify-between gap-3 md:ml-auto md:w-auto">
               <div
                 className="min-h-5 text-sm font-medium"
                 role="status"
