@@ -14,15 +14,11 @@ export function MobileKeypad({ onKey }: MobileKeypadProps) {
       {KEYPAD_KEYS.map((key) => (
         <Button
           key={key}
-          variant={
-            key === "="
-              ? "default"
-              : ["+", "-", "×", "÷", "%", "clear"].includes(key)
-                ? "secondary"
-                : "outline"
-          }
+          variant="outline"
           className={cn(
             "h-full rounded-lg text-lg font-semibold",
+            ["+", "-", "×", "÷", "%", "clear", "delete", "="].includes(key) &&
+              "bg-primary/10 hover:bg-primary/15 dark:bg-primary/10",
             key === "=" && "col-span-2"
           )}
           onClick={() => onKey(key)}

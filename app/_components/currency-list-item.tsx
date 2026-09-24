@@ -82,7 +82,7 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
   return (
     <article
       className={cn(
-        "flex min-w-0 items-center gap-2 rounded-xl border border-border/60 px-2 py-4 text-foreground shadow-sm sm:gap-3 sm:px-4",
+        "flex min-h-40 min-w-0 items-center gap-2 rounded-xl border border-border/60 px-2 py-5 text-foreground shadow-sm sm:min-h-28 sm:gap-3 sm:px-4",
         COLOR_CLASSES[color],
         dragging && "opacity-55",
         dropTarget && "ring-2 ring-primary"
@@ -147,7 +147,7 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
         )}
       </div>
 
-      <Menu.Root>
+      <Menu.Root modal={false}>
         <Menu.Trigger
           render={
             <Button
@@ -165,8 +165,11 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
             align="end"
             className="z-30 outline-none"
           >
-            <Menu.Popup className="w-52 rounded-lg border border-border bg-popover p-1.5 text-popover-foreground shadow-lg outline-none">
+            <Menu.Popup className="max-h-[var(--available-height)] w-52 overflow-y-auto overscroll-contain rounded-lg border border-border bg-popover p-1.5 text-popover-foreground shadow-lg outline-none">
               <Menu.Group>
+                <Menu.GroupLabel className="px-3 py-1.5 text-xs font-semibold text-muted-foreground">
+                  Reorder
+                </Menu.GroupLabel>
                 <Menu.Item
                   disabled={!canMoveUp}
                   className="cursor-pointer rounded-md px-3 py-2 text-sm outline-none data-highlighted:bg-muted data-disabled:opacity-40"
@@ -189,6 +192,9 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
                     Use as base
                   </Menu.Item>
                 ) : null}
+              </Menu.Group>
+              <Menu.Separator className="my-1 h-px bg-border" />
+              <Menu.Group>
                 <Menu.GroupLabel className="px-3 py-1.5 text-xs font-semibold text-muted-foreground">
                   Row color
                 </Menu.GroupLabel>
@@ -211,6 +217,9 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
                     ) : null}
                   </Menu.Item>
                 ))}
+              </Menu.Group>
+              <Menu.Separator className="my-1 h-px bg-border" />
+              <Menu.Group>
                 <Menu.Item
                   disabled={!canRemove}
                   className="cursor-pointer rounded-md px-3 py-2 text-sm text-destructive outline-none data-highlighted:bg-muted data-disabled:opacity-40"

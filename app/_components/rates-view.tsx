@@ -1,6 +1,6 @@
 "use client"
 
-import { useDeferredValue, useState } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { ArrowLeft, ChevronDown, Search } from "lucide-react"
 import { FlagIcon } from "./flag-icon"
@@ -21,12 +21,12 @@ export function RatesView({
   onOpenBase,
 }: RatesViewProps) {
   const [search, setSearch] = useState("")
-  const deferredSearch = useDeferredValue(search.trim().toLowerCase())
-  const filteredCurrencies = deferredSearch
+  const query = search.trim().toLowerCase()
+  const filteredCurrencies = query
     ? currencies.filter(
         (currency) =>
-          currency.code.toLowerCase().includes(deferredSearch) ||
-          currency.name.toLowerCase().includes(deferredSearch)
+          currency.code.toLowerCase().includes(query) ||
+          currency.name.toLowerCase().includes(query)
       )
     : currencies
   const baseRate = base ? rates[base.code] : undefined

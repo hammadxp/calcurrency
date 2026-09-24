@@ -19,7 +19,7 @@ export function CurrencyOption({
     <Button
       variant="ghost"
       className={cn(
-        "h-16 w-full justify-start gap-3 rounded-md border-b border-border px-2.5 text-left",
+        "h-16 w-full justify-start gap-3 rounded-none border-x-0 border-t-0 border-b border-border px-2.5 text-left",
         selected && "bg-accent"
       )}
       onClick={() => onSelect(currency.code)}

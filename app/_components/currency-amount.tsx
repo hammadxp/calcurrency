@@ -186,22 +186,19 @@ export function CurrencyAmount({
         )}
         style={{ fontSize, columnGap: "0.05em" }}
       >
-        <span
-          className={cn(
-            "shrink-0 leading-none",
-            role === "target" && "opacity-70"
-          )}
-          style={{ fontSize: "0.5em" }}
-        >
-          {currency.symbol}
-        </span>
+        <span className="shrink-0 leading-none">{currency.symbol}</span>
 
         {role === "source" ? (
-          <span className="flex max-w-full min-w-0 items-baseline">
+          <span className="inline-grid max-w-full min-w-0 items-baseline">
+            <span
+              className="invisible col-start-1 row-start-1 tracking-tighter whitespace-nowrap"
+              aria-hidden="true"
+            >
+              {displayAmount || "0"}
+            </span>
             <input
-              className="peer block max-w-full min-w-0 border-0 bg-transparent p-0 text-right leading-none tracking-tighter text-inherit caret-transparent outline-none placeholder:text-current/70 focus-visible:outline-none"
+              className="peer col-start-1 row-start-1 block w-full min-w-0 border-0 bg-transparent p-0 text-right leading-none tracking-tighter text-inherit caret-transparent outline-none placeholder:text-current/70 focus-visible:outline-none"
               ref={inputRef}
-              style={{ width: `${Math.max(displayAmount.length, 1)}ch` }}
               inputMode="decimal"
               value={displayAmount}
               onChange={(event) =>
@@ -225,7 +222,7 @@ export function CurrencyAmount({
               aria-label={`Amount in ${currency.code}`}
             />
             <span
-              className="amount-caret shrink-0 self-center rounded-full bg-rose-500 opacity-0 peer-focus:opacity-100"
+              className="amount-caret col-start-2 row-start-1 shrink-0 self-center rounded-full bg-rose-500 opacity-0 peer-focus:opacity-100"
               style={{ marginLeft: "0.07em", width: "0.05em" }}
               aria-hidden="true"
             />
@@ -250,14 +247,10 @@ export function CurrencyAmount({
         style={{ columnGap: "0.05em" }}
         aria-hidden="true"
       >
-        <span style={{ fontSize: "0.5em" }}>{currency.symbol}</span>
+        <span>{currency.symbol}</span>
         <span
           className="tracking-tighter"
-          style={
-            role === "source"
-              ? { width: `${Math.max(displayAmount.length, 1)}ch` }
-              : { paddingRight: "0.12em" }
-          }
+          style={role === "target" ? { paddingRight: "0.12em" } : undefined}
         >
           {visibleAmount}
         </span>

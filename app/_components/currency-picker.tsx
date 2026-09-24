@@ -87,29 +87,31 @@ export function CurrencyPicker({
             <X size={18} />
           </Button>
         </div>
-        <label className="search-field mx-3.5 my-3 flex items-center gap-2.5 rounded-[7px] border border-stone-200 bg-stone-100 px-3.5 py-3 md:mx-5 dark:border-neutral-600 dark:bg-neutral-900">
-          <Search size={17} />
-          <input
-            className="min-w-0 flex-1 border-0 bg-transparent text-[13px] text-slate-900 outline-none placeholder:text-slate-500 dark:text-stone-50"
-            ref={searchRef}
-            value={search}
-            onChange={(event) => {
-              setSearch(event.target.value)
-              listRef.current?.scrollTo(0, 0)
-              setScrollTop(0)
-            }}
-            placeholder="Search by name or code"
-            aria-label="Search currencies"
-          />
-          <kbd className="rounded bg-stone-200 px-1.5 py-1 text-[10px] text-slate-500 dark:bg-neutral-700 dark:text-neutral-300">
-            esc
-          </kbd>
-        </label>
         <div
           ref={listRef}
           className="max-h-[min(50vh,500px)] min-h-64 overflow-auto px-3.5 pb-2 md:min-h-80 md:px-5"
           onScroll={(event) => setScrollTop(event.currentTarget.scrollTop)}
         >
+          <div className="sticky top-0 z-10 -mx-3.5 bg-stone-50 px-3.5 py-3 md:-mx-5 md:px-5 dark:bg-neutral-800">
+            <label className="search-field flex items-center gap-2.5 rounded-[7px] border border-stone-200 bg-stone-100 px-3.5 py-3 dark:border-neutral-600 dark:bg-neutral-900">
+              <Search size={17} />
+              <input
+                className="min-w-0 flex-1 border-0 bg-transparent text-[13px] text-slate-900 outline-none placeholder:text-slate-500 dark:text-stone-50"
+                ref={searchRef}
+                value={search}
+                onChange={(event) => {
+                  setSearch(event.target.value)
+                  listRef.current?.scrollTo(0, 0)
+                  setScrollTop(0)
+                }}
+                placeholder="Search by name or code"
+                aria-label="Search currencies"
+              />
+              <kbd className="rounded bg-stone-200 px-1.5 py-1 text-[10px] text-slate-500 dark:bg-neutral-700 dark:text-neutral-300">
+                esc
+              </kbd>
+            </label>
+          </div>
           <div style={{ height: start * ROW_HEIGHT }} aria-hidden="true" />
           {filtered.slice(start, end).map((currency) => (
             <CurrencyOption

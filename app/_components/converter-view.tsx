@@ -4,7 +4,6 @@ import { useRef, useState, type PointerEvent } from "react"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { CurrencyListItem } from "./currency-list-item"
-import { CalculatorToolbar } from "./calculator-toolbar"
 import { MobileKeypad } from "./mobile-keypad"
 import type {
   Currency,
@@ -107,7 +106,7 @@ export function ConverterView({
     >
       <div className="min-h-0 flex-1 overflow-y-auto px-3 py-5 sm:px-6 md:py-8">
         <div className="mx-auto flex max-w-5xl flex-col gap-4">
-          <div className="flex flex-wrap items-end justify-between gap-2">
+          <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
               <h1 className="font-sans text-2xl font-bold tracking-tight sm:text-3xl">
                 Your currencies
@@ -116,19 +115,29 @@ export function ConverterView({
                 Enter an amount in the first row. Drag to change the order.
               </p>
             </div>
-            <div
-              className="min-h-5 text-sm font-medium"
-              role="status"
-              aria-live="polite"
-            >
-              {error ? (
-                <span className="text-destructive">{error}</span>
-              ) : (
-                expression
-              )}
+            <div className="ml-auto flex w-full items-center justify-between gap-3 sm:w-auto">
+              <div
+                className="min-h-5 text-sm font-medium"
+                role="status"
+                aria-live="polite"
+              >
+                {error ? (
+                  <span className="text-destructive">{error}</span>
+                ) : (
+                  expression
+                )}
+              </div>
+              <Button
+                variant="secondary"
+                size="lg"
+                className="rounded-md"
+                onClick={onAdd}
+              >
+                <Plus data-icon="inline-start" /> Add currency
+              </Button>
             </div>
           </div>
-          <ol className="flex flex-col gap-2.5">
+          <ol className="mt-2 flex flex-col gap-2.5">
             {selected.map((item, index) => {
               const currency =
                 currencies.find((candidate) => candidate.code === item.code) ??
@@ -190,18 +199,9 @@ export function ConverterView({
               )
             })}
           </ol>
-          <Button
-            variant="outline"
-            size="lg"
-            className="self-start"
-            onClick={onAdd}
-          >
-            <Plus data-icon="inline-start" /> Add currency
-          </Button>
         </div>
       </div>
 
-      <CalculatorToolbar onKey={onKey} />
       <MobileKeypad onKey={onKey} />
     </section>
   )

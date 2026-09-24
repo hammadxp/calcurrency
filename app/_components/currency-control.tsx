@@ -21,16 +21,16 @@ export function CurrencyControl({
 }: CurrencyControlProps) {
   return (
     <div className="flex min-w-0 items-center gap-3">
-      <FlagIcon currency={currency} size="small" />
+      <Button
+        variant="secondary"
+        size="sm"
+        onClick={onOpen}
+        aria-label={`Change ${currency.code} currency`}
+      >
+        {currency.code} <ChevronDown data-icon="inline-end" />
+      </Button>
       <div className="flex min-w-0 flex-col items-start gap-1">
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={onOpen}
-          aria-label={`Change ${currency.code} currency`}
-        >
-          {currency.code} <ChevronDown data-icon="inline-end" />
-        </Button>
+        <FlagIcon currency={currency} size="small" />
         <span className="max-w-32 truncate text-xs font-medium opacity-75 sm:max-w-48">
           {currency.name}
         </span>
