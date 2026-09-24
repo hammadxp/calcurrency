@@ -176,7 +176,7 @@ export function CurrencyAmount({
   return (
     <div
       ref={containerRef}
-      className="relative w-full min-w-0 text-foreground/80"
+      className="relative w-full min-w-0 font-medium text-foreground/80"
       style={{ fontFamily: "var(--font-sans), sans-serif" }}
     >
       <div className="flex w-full min-w-0 justify-end">

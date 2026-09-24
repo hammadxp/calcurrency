@@ -19,7 +19,7 @@ export function FlagIcon({ currency, size = "medium" }: FlagIconProps) {
     <span
       className={cn(
         "grid shrink-0 place-items-center rounded bg-emerald-100 text-emerald-600",
-        size === "small" ? "h-5 w-7 rounded-lg" : "h-9 w-21.5 md:h-11.5"
+        size === "small" ? "h-6 w-8 rounded-lg" : "h-9 w-21.5 md:h-11.5"
       )}
       aria-hidden="true"
     >
@@ -42,7 +42,7 @@ function FlagImage({ flag, size }: FlagImageProps) {
       <span
         className={cn(
           "grid shrink-0 place-items-center rounded bg-emerald-100 text-emerald-600",
-          size === "small" ? "h-5 w-7 rounded-lg" : "h-9 w-21.5 md:h-11.5"
+          size === "small" ? "h-6 w-8 rounded-lg" : "h-9 w-21.5 md:h-11.5"
         )}
         aria-hidden="true"
       >
@@ -56,7 +56,7 @@ function FlagImage({ flag, size }: FlagImageProps) {
       className={cn(
         "relative block shrink-0 overflow-hidden rounded-md",
         size === "small"
-          ? "h-5 w-7 rounded-[4px]"
+          ? "h-6 w-8 rounded-[4px]"
           : "h-9 w-21.5 max-w-21.5 shadow-md md:h-11.5"
       )}
       aria-hidden="true"
@@ -69,9 +69,10 @@ function FlagImage({ flag, size }: FlagImageProps) {
           "block h-full w-full object-cover",
           !loaded && "opacity-0"
         )}
-        src={`https://flagcdn.com/w320/${flag}.png`}
-        width={320}
-        height={240}
+        src={`https://flagcdn.com/w160/${flag}.png`}
+        width={size === "small" ? 32 : 86}
+        height={size === "small" ? 24 : 65}
+        unoptimized
         alt=""
         onLoad={() => setLoaded(true)}
         onError={() => setFailed(true)}

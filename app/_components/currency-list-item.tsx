@@ -82,7 +82,7 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
   return (
     <article
       className={cn(
-        "flex min-h-40 min-w-0 items-center gap-2 rounded-xl border border-border/60 px-2 py-5 text-foreground shadow-sm sm:min-h-28 sm:gap-3 sm:px-4",
+        "flex min-h-38 min-w-0 items-center gap-2 rounded-xl border border-border/60 px-2 py-4 text-foreground shadow-sm sm:min-h-26 sm:gap-3 sm:px-4",
         COLOR_CLASSES[color],
         dragging && "opacity-55",
         dropTarget && "ring-2 ring-primary"
@@ -135,7 +135,14 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
               loading ? `Loading ${code}` : `Rates unavailable for ${code}`
             }
           >
-            <span className="font-bold">{code}</span>
+            {loading ? (
+              <span
+                className="h-7 w-12 animate-pulse rounded-md bg-foreground/10"
+                aria-hidden="true"
+              />
+            ) : (
+              <span className="font-bold">{code}</span>
+            )}
             {loading ? (
               <span className="h-9 w-28 animate-pulse rounded-md bg-foreground/10" />
             ) : (
