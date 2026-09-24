@@ -4,48 +4,72 @@ import { KEYPAD_KEYS } from "@/config/constants"
 import { cn } from "@/lib/utils"
 
 type MobileKeypadProps = {
+  open: boolean
   onKey: (key: string) => void
   onHide: () => void
 }
 
-export function MobileKeypad({ onKey, onHide }: MobileKeypadProps) {
+export function MobileKeypad({ open, onKey, onHide }: MobileKeypadProps) {
+  function pressKey(key: string) {
+    navigator.vibrate?.(8)
+    onKey(key)
+  }
+
+  function hideKeypad() {
+    navigator.vibrate?.(8)
+    onHide()
+  }
+
   return (
     <div
-      className="grid h-64 shrink-0 grid-cols-4 grid-rows-5 gap-1.5 border-t border-border bg-surface px-3 pt-2.5 pb-[max(9px,env(safe-area-inset-bottom))] md:hidden"
-      aria-label="Amount keypad"
-      onPointerDown={(event) => event.preventDefault()}
+      className={cn(
+        "shrink-0 overflow-hidden transition-[max-height,opacity] duration-200 ease-out motion-reduce:transition-none md:hidden",
+        open ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
+      )}
+      aria-hidden={!open}
+      inert={!open}
     >
-      {KEYPAD_KEYS.map((key) => (
-        <Button
-          key={key}
-          variant="outline"
-          className={cn(
-            "h-full rounded-lg text-lg font-semibold",
-            ["+", "-", "×", "÷", "%", "clear", "delete", "="].includes(key) &&
-              "bg-primary/10 hover:bg-primary/15 dark:bg-primary/10"
-          )}
-          onClick={() => onKey(key)}
-          aria-label={
-            key === "delete" ? "Backspace" : key === "clear" ? "Clear" : key
-          }
-        >
-          {key === "delete" ? (
-            <Delete size={21} />
-          ) : key === "clear" ? (
-            "C"
-          ) : (
-            key
-          )}
-        </Button>
-      ))}
-      <Button
-        variant="outline"
-        className="h-full rounded-lg text-sm font-semibold"
-        onClick={onHide}
-        aria-label="Hide keypad"
+      <div
+        className={cn(
+          "grid h-80 grid-cols-4 grid-rows-5 gap-1.5 border-t border-border bg-surface px-3 pt-2.5 pb-[max(9px,env(safe-area-inset-bottom))] transition-transform duration-200 ease-out motion-reduce:transition-none",
+          open ? "translate-y-0" : "translate-y-3"
+        )}
+        role="group"
+        aria-label="Amount keypad"
+        onPointerDown={(event) => event.preventDefault()}
       >
-        Hide
-      </Button>
+        {KEYPAD_KEYS.map((key) => (
+          <Button
+            key={key}
+            variant="outline"
+            className={cn(
+              "h-full rounded-lg text-lg font-semibold",
+              (/^\d$/.test(key) || key === ".") &&
+                "bg-currency-paper hover:bg-currency-paper/80 dark:bg-currency-paper dark:hover:bg-currency-paper/80"
+            )}
+            onClick={() => (key === "hide" ? hideKeypad() : pressKey(key))}
+            aria-label={
+              key === "delete"
+                ? "Backspace"
+                : key === "clear"
+                  ? "Clear"
+                  : key === "hide"
+                    ? "Hide keypad"
+                    : key
+            }
+          >
+            {key === "delete" ? (
+              <Delete size={21} />
+            ) : key === "clear" ? (
+              "AC"
+            ) : key === "hide" ? (
+              "Hide"
+            ) : (
+              key
+            )}
+          </Button>
+        ))}
+      </div>
     </div>
   )
 }

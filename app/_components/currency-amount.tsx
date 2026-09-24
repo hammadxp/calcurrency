@@ -228,7 +228,7 @@ export function CurrencyAmount({
                 {visibleAmount}
               </span>
               <input
-                className="absolute inset-0 block size-full min-w-0 border-0 bg-transparent p-0 text-right leading-none tracking-tight text-inherit caret-rose-500 outline-none placeholder:text-current focus-visible:outline-none"
+                className="peer absolute inset-0 block size-full min-w-0 border-0 bg-transparent p-0 text-right leading-none tracking-tight text-inherit caret-rose-500 outline-none placeholder:text-current focus-visible:outline-none"
                 ref={inputRef}
                 inputMode={isMobileViewport ? "none" : "decimal"}
                 readOnly={isMobileViewport}
@@ -256,6 +256,12 @@ export function CurrencyAmount({
                 placeholder="0"
                 aria-label={`Amount in ${currency.code}`}
               />
+              {isMobileViewport ? (
+                <span
+                  className="pointer-events-none absolute inset-y-0 -right-1 hidden w-0.5 bg-destructive peer-focus:block"
+                  aria-hidden="true"
+                />
+              ) : null}
             </span>
           ) : (
             <output

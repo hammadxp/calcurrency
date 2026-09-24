@@ -45,6 +45,9 @@ type CurrencyListItemProps = {
 const COLOR_CLASSES = Object.fromEntries(
   CURRENCY_COLORS.map((color) => [color.value, color.className])
 ) as Record<CurrencyColor, string>
+const BUTTON_TEXT_CLASSES = Object.fromEntries(
+  CURRENCY_COLORS.map((color) => [color.value, color.textClassName])
+) as Record<CurrencyColor, string>
 
 export function CurrencyListItem(props: CurrencyListItemProps) {
   const {
@@ -84,7 +87,7 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
   return (
     <article
       className={cn(
-        "flex min-h-36 min-w-0 flex-wrap items-center gap-2 rounded-xl border border-border/60 px-2 py-4 text-foreground shadow-sm sm:min-h-26 sm:flex-nowrap sm:gap-3 sm:px-4",
+        "flex min-h-36 min-w-0 flex-wrap items-center gap-2 rounded-xl border border-border/60 py-4 pr-3 pl-2 text-foreground shadow-sm sm:min-h-26 sm:flex-nowrap sm:gap-3 sm:px-4",
         COLOR_CLASSES[color],
         dragging && "opacity-55",
         dropTarget && "ring-2 ring-primary"
@@ -112,6 +115,7 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
             source={source}
             isSource={isSource}
             rate={rate}
+            buttonTextClassName={BUTTON_TEXT_CLASSES[color]}
             onOpen={onOpen}
           />
           <div className="order-4 w-full min-w-0 pr-2 sm:order-3 sm:w-auto sm:flex-1 sm:basis-1/2 sm:pr-0">
@@ -159,9 +163,12 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
         <Menu.Trigger
           render={
             <Button
-              variant="secondary"
+              variant="default"
               size="icon-sm"
-              className="order-3 sm:order-4"
+              className={cn(
+                "order-3 bg-foreground/80 hover:bg-foreground/70 sm:order-4",
+                BUTTON_TEXT_CLASSES[color]
+              )}
               aria-label={`Options for ${code}`}
             />
           }

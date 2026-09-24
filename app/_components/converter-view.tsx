@@ -105,14 +105,14 @@ export function ConverterView({
       className="flex min-h-0 flex-1 flex-col"
       aria-label="Currency converter"
     >
-      <div className="min-h-0 flex-1 overflow-y-auto px-3 py-5 sm:px-6 md:py-8">
+      <div className="min-h-0 flex-1 overflow-y-auto px-3 pt-6.5 pb-5 sm:px-6 md:pt-9.5 md:pb-8">
         <div className="mx-auto flex max-w-5xl flex-col gap-4">
           <div className="flex flex-col items-stretch gap-4 md:flex-row md:items-end md:justify-between">
             <div className="px-2 sm:px-0">
               <h1 className="font-sans text-2xl leading-tight font-bold tracking-tight md:text-4xl">
                 Your currencies
               </h1>
-              <p className="text-sm text-muted-foreground md:text-base">
+              <p className="mt-2.25 text-sm leading-normal text-muted-foreground md:text-base">
                 Enter an amount in the first row. Drag to change the order.
               </p>
             </div>
@@ -206,16 +206,15 @@ export function ConverterView({
         </div>
       </div>
 
-      {amountFocused && keepAmountFocus ? (
-        <MobileKeypad
-          onKey={onKey}
-          onHide={() => {
-            if (document.activeElement instanceof HTMLElement)
-              document.activeElement.blur()
-            setAmountFocused(false)
-          }}
-        />
-      ) : null}
+      <MobileKeypad
+        open={amountFocused && keepAmountFocus}
+        onKey={onKey}
+        onHide={() => {
+          if (document.activeElement instanceof HTMLElement)
+            document.activeElement.blur()
+          setAmountFocused(false)
+        }}
+      />
     </section>
   )
 }

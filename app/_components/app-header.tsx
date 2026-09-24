@@ -65,7 +65,7 @@ export function AppHeader({
     <header className="relative z-10 flex min-h-[58px] shrink-0 items-center gap-3 bg-slate-900 px-5 text-stone-50 md:min-h-[70px] md:gap-5 md:px-9 dark:bg-neutral-900">
       <Link
         href="/"
-        className="flex items-center gap-1.5 border-0 bg-transparent p-0 text-[13px] font-extrabold tracking-[-0.06em] text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:text-base"
+        className="flex items-center gap-1.5 border-0 bg-transparent p-0 text-sm font-extrabold tracking-[-0.06em] text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 md:text-base lg:text-lg"
         onClick={onNavigate}
         aria-label="Go to converter"
       >
