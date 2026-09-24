@@ -44,7 +44,7 @@ export function DonateDialog({ onClose }: DonateDialogProps) {
           keep the rates fresh
         </span>
         <h2 className="text-[25px] tracking-[-0.08em]" id={titleId}>
-          Buy us a tiny coffee.
+          Buy me a tiny coffee.
         </h2>
         <p className="my-[18px] mb-6 max-w-80 text-[13px] leading-[1.6] text-slate-600 dark:text-neutral-300">
           {PROJECT_DETAILS.name} is a weekend tool with no sign-up and no noise.

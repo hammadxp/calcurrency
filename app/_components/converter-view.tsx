@@ -113,7 +113,8 @@ export function ConverterView({
                 Your currencies
               </h1>
               <p className="mt-2.25 text-sm leading-normal text-muted-foreground md:text-base">
-                Enter an amount in the first row. Drag to change the order.
+                Enter one amount to see every selected currency. Drag to change
+                the order.
               </p>
             </div>
             <div className="flex w-full items-center justify-between gap-3 md:ml-auto md:w-auto">

@@ -1,16 +1,14 @@
-import type { Metadata } from "next"
-import { connection } from "next/server"
-
 import { ConverterApp } from "../_components/converter-app"
-import { PROJECT_DETAILS } from "@/data/PROJECT_DETAILS"
+import { createPageMetadata } from "@/config/metadata"
 
-export const metadata: Metadata = {
-  title: `Settings | ${PROJECT_DETAILS.name}`,
-  description: `Choose how ${PROJECT_DETAILS.name} displays and remembers amounts.`,
-}
+export const metadata = createPageMetadata({
+  title: "Settings",
+  description:
+    "Customize how calcurrency displays conversions and remembers your preferences in this browser.",
+  path: "/settings",
+  index: false,
+})
 
-export default async function SettingsPage() {
-  await connection()
-
+export default function SettingsPage() {
   return <ConverterApp view="settings" />
 }

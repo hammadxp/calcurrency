@@ -1,16 +1,13 @@
-import type { Metadata } from "next"
-import { connection } from "next/server"
-
 import { ConverterApp } from "../_components/converter-app"
-import { PROJECT_DETAILS } from "@/data/PROJECT_DETAILS"
+import { createPageMetadata } from "@/config/metadata"
 
-export const metadata: Metadata = {
-  title: `Exchange rates | ${PROJECT_DETAILS.name}`,
-  description: "Compare indicative currency exchange rates.",
-}
+export const metadata = createPageMetadata({
+  title: "Exchange Rates",
+  description:
+    "Compare the latest available reference exchange rates across multiple currencies. Choose a base currency and see indicative rates in one list.",
+  path: "/rates",
+})
 
-export default async function RatesPage() {
-  await connection()
-
+export default function RatesPage() {
   return <ConverterApp view="rates" />
 }

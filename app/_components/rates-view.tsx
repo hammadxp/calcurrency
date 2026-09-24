@@ -37,7 +37,8 @@ export function RatesView({
           Exchange rates
         </h1>
         <p className="mt-2.25 max-w-162.5 text-sm leading-normal text-slate-500 md:text-base dark:text-neutral-300">
-          Compare indicative rates before sending money.
+          Compare the latest available reference rates across multiple
+          currencies before sending money.
         </p>
       </div>
       <div className="mx-auto mt-6.25 flex max-w-295 flex-col items-start gap-3 rounded-[9px] bg-emerald-600 p-4.25 text-sm text-emerald-50 md:mt-8.5 md:flex-row md:items-center md:gap-5 md:px-6 md:py-5 md:text-base dark:bg-emerald-800">
