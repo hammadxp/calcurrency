@@ -57,6 +57,7 @@ export function ConverterView({
   const dragTo = useRef<number | null>(null)
   const [dragging, setDragging] = useState<number | null>(null)
   const [dropTarget, setDropTarget] = useState<number | null>(null)
+  const [amountFocused, setAmountFocused] = useState(false)
   const source =
     currencies.find((currency) => currency.code === selected[0]?.code) ?? null
   const sourceRate = source ? rates[source.code] : undefined
@@ -108,7 +109,7 @@ export function ConverterView({
         <div className="mx-auto flex max-w-5xl flex-col gap-4">
           <div className="flex flex-col items-stretch gap-4 md:flex-row md:items-end md:justify-between">
             <div className="px-2 sm:px-0">
-              <h1 className="font-sans text-3xl leading-tight font-bold tracking-tight md:text-5xl">
+              <h1 className="font-sans text-2xl leading-tight font-bold tracking-tight md:text-4xl">
                 Your currencies
               </h1>
               <p className="text-sm text-muted-foreground md:text-base">
@@ -168,6 +169,9 @@ export function ConverterView({
                     canMoveUp={index > 0}
                     canMoveDown={index < selected.length - 1}
                     onChange={onAmountChange}
+                    onAmountFocusChange={
+                      index === 0 ? setAmountFocused : undefined
+                    }
                     onCalculatorKey={onKey}
                     onOpen={() => onOpenCurrency(index)}
                     onColor={(color) => onColor(index, color)}
@@ -202,7 +206,16 @@ export function ConverterView({
         </div>
       </div>
 
-      <MobileKeypad onKey={onKey} />
+      {amountFocused && keepAmountFocus ? (
+        <MobileKeypad
+          onKey={onKey}
+          onHide={() => {
+            if (document.activeElement instanceof HTMLElement)
+              document.activeElement.blur()
+            setAmountFocused(false)
+          }}
+        />
+      ) : null}
     </section>
   )
 }

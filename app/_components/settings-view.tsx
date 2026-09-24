@@ -14,7 +14,7 @@ export function SettingsView({ settings, onToggle }: SettingsViewProps) {
   return (
     <section className="flex min-h-[calc(100svh-70px)] flex-col bg-background px-[17px] pt-[26px] pb-11 text-foreground md:px-[max(5vw,28px)] md:pt-[38px] md:pb-[60px]">
       <div className="mx-auto w-full max-w-[1180px]">
-        <h1 className="max-w-[720px] font-sans text-3xl leading-tight font-bold tracking-[-0.05em] md:text-5xl">
+        <h1 className="max-w-[720px] font-sans text-2xl leading-tight font-bold tracking-[-0.05em] md:text-4xl">
           Settings
         </h1>
         <p className="mt-[9px] max-w-[650px] text-sm leading-[1.5] text-slate-500 md:text-base dark:text-neutral-300">
@@ -46,6 +46,8 @@ export function SettingsView({ settings, onToggle }: SettingsViewProps) {
         Built with ❤️ by{" "}
         <Link
           href={PROJECT_DETAILS.authorUrl}
+          target="_blank"
+          rel="noopener noreferrer"
           className="underline decoration-muted-foreground/50 underline-offset-4 hover:decoration-current focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
         >
           {PROJECT_DETAILS.author}

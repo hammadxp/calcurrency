@@ -27,6 +27,7 @@ type CurrencyListItemProps = {
   canMoveUp: boolean
   canMoveDown: boolean
   onChange: (value: string) => void
+  onAmountFocusChange?: (focused: boolean) => void
   onCalculatorKey: (key: string) => void
   onOpen: () => void
   onColor: (color: CurrencyColor) => void
@@ -65,6 +66,7 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
     canMoveUp,
     canMoveDown,
     onChange,
+    onAmountFocusChange,
     onCalculatorKey,
     onOpen,
     onColor,
@@ -112,7 +114,7 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
             rate={rate}
             onOpen={onOpen}
           />
-          <div className="order-4 w-full min-w-0 sm:order-3 sm:w-auto sm:flex-1 sm:basis-1/2">
+          <div className="order-4 w-full min-w-0 pr-2 sm:order-3 sm:w-auto sm:flex-1 sm:basis-1/2 sm:pr-0">
             <CurrencyAmount
               currency={currency}
               role={isSource ? "source" : "target"}
@@ -121,6 +123,7 @@ export function CurrencyListItem(props: CurrencyListItemProps) {
               settings={settings}
               keepAmountFocus={keepAmountFocus && isSource}
               onChange={onChange}
+              onFocusChange={onAmountFocusChange}
               onCalculatorKey={onCalculatorKey}
               awaitingNext={awaitingNext}
             />

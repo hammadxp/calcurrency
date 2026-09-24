@@ -33,7 +33,7 @@ export function RatesView({
   return (
     <section className="min-h-[calc(100svh-70px)] bg-background px-4.25 pt-6.5 pb-11 text-foreground md:px-[max(5vw,28px)] md:pt-9.5 md:pb-15">
       <div className="mx-auto max-w-295">
-        <h1 className="max-w-180 font-sans text-3xl leading-tight font-bold tracking-tighter md:text-5xl">
+        <h1 className="max-w-180 font-sans text-2xl leading-tight font-bold tracking-tight md:text-4xl">
           Exchange rates
         </h1>
         <p className="mt-2.25 max-w-162.5 text-sm leading-normal text-slate-500 md:text-base dark:text-neutral-300">

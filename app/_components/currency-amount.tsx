@@ -17,10 +17,18 @@ import {
 } from "@/utils/currency"
 
 const AMOUNT_TEXT_SIZE = "text-3xl sm:text-4xl lg:text-5xl"
+const MOBILE_VIEWPORT_QUERY = "(max-width: 767px)"
 
 const subscribeToLocale = () => () => undefined
 const getLocale = () => navigator.language || "en-US"
 const getServerLocale = () => "en-US"
+const subscribeToMobileViewport = (listener: () => void) => {
+  const media = window.matchMedia(MOBILE_VIEWPORT_QUERY)
+  media.addEventListener("change", listener)
+  return () => media.removeEventListener("change", listener)
+}
+const getMobileViewport = () => window.matchMedia(MOBILE_VIEWPORT_QUERY).matches
+const getServerMobileViewport = () => false
 
 type CurrencyAmountProps = {
   currency: Currency
@@ -30,6 +38,7 @@ type CurrencyAmountProps = {
   settings: Settings
   keepAmountFocus?: boolean
   onChange?: (value: string) => void
+  onFocusChange?: (focused: boolean) => void
   onCalculatorKey?: (key: string) => void
   awaitingNext?: boolean
 }
@@ -42,6 +51,7 @@ export function CurrencyAmount({
   settings,
   keepAmountFocus = false,
   onChange,
+  onFocusChange,
   onCalculatorKey,
   awaitingNext = false,
 }: CurrencyAmountProps) {
@@ -49,6 +59,11 @@ export function CurrencyAmount({
     subscribeToLocale,
     getLocale,
     getServerLocale
+  )
+  const isMobileViewport = useSyncExternalStore(
+    subscribeToMobileViewport,
+    getMobileViewport,
+    getServerMobileViewport
   )
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -88,10 +103,11 @@ export function CurrencyAmount({
     if (
       role === "source" &&
       keepAmountFocus &&
+      !window.matchMedia(MOBILE_VIEWPORT_QUERY).matches &&
       window.matchMedia("(pointer: fine)").matches
     )
       inputRef.current?.focus({ preventScroll: true })
-  }, [role, keepAmountFocus, amount])
+  }, [role, keepAmountFocus, amount, isMobileViewport])
 
   useLayoutEffect(() => {
     const input = inputRef.current
@@ -129,6 +145,21 @@ export function CurrencyAmount({
             : event.key === "/"
               ? "÷"
               : event.key
+    if (isMobileViewport) {
+      const key =
+        calculatorKey === "Backspace" || calculatorKey === "Delete"
+          ? "delete"
+          : calculatorKey
+      if (
+        /^\d$/.test(key) ||
+        [".", "+", "-", "×", "÷", "=", "%", "clear", "delete"].includes(key)
+      ) {
+        event.preventDefault()
+        onCalculatorKey?.(key)
+      }
+      return
+    }
+
     if (
       ["+", "-", "×", "÷", "=", "%", "clear"].includes(calculatorKey) ||
       (awaitingNext && /^\d$/.test(calculatorKey)) ||
@@ -192,15 +223,17 @@ export function CurrencyAmount({
           </span>
 
           {role === "source" ? (
-            <span className="relative inline-block shrink-0 tracking-tighter">
+            <span className="relative inline-block shrink-0 tracking-tight">
               <span className="invisible" aria-hidden="true">
                 {visibleAmount}
               </span>
               <input
-                className="absolute inset-0 block size-full min-w-0 border-0 bg-transparent p-0 text-right leading-none tracking-tighter text-inherit caret-rose-500 outline-none placeholder:text-current focus-visible:outline-none"
+                className="absolute inset-0 block size-full min-w-0 border-0 bg-transparent p-0 text-right leading-none tracking-tight text-inherit caret-rose-500 outline-none placeholder:text-current focus-visible:outline-none"
                 ref={inputRef}
-                inputMode="decimal"
+                inputMode={isMobileViewport ? "none" : "decimal"}
+                readOnly={isMobileViewport}
                 value={displayAmount}
+                onFocus={() => onFocusChange?.(true)}
                 onChange={(event) =>
                   changeAmount(
                     event.target.value,
@@ -209,9 +242,11 @@ export function CurrencyAmount({
                 }
                 onKeyDown={onAmountKeyDown}
                 onBlur={() => {
+                  onFocusChange?.(false)
                   requestAnimationFrame(() => {
                     if (
                       keepAmountFocus &&
+                      !window.matchMedia(MOBILE_VIEWPORT_QUERY).matches &&
                       window.matchMedia("(pointer: fine)").matches &&
                       document.activeElement === document.body
                     )
@@ -224,7 +259,7 @@ export function CurrencyAmount({
             </span>
           ) : (
             <output
-              className="min-w-0 overflow-hidden text-right tracking-tighter"
+              className="min-w-0 overflow-hidden text-right tracking-tight"
               aria-label={`Converted amount in ${currency.code}`}
             >
               {outputAmount}
@@ -242,7 +277,7 @@ export function CurrencyAmount({
         aria-hidden="true"
       >
         <span>{currency.symbol}</span>
-        <span className="tracking-tighter">{visibleAmount}</span>
+        <span className="tracking-tight">{visibleAmount}</span>
       </span>
     </div>
   )
