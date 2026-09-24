@@ -16,6 +16,9 @@ import {
   parseEditableAmount,
 } from "@/utils/currency"
 
+const AMOUNT_TEXT_SIZE =
+  "text-[29px] sm:text-[clamp(29px,9vw,62px)] md:text-[clamp(52px,8.4vw,132px)]"
+
 const subscribeToLocale = () => () => undefined
 const getLocale = () => navigator.language || "en-US"
 const getServerLocale = () => "en-US"
@@ -46,7 +49,6 @@ export function CurrencyAmount({
   )
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const symbolRef = useRef<HTMLSpanElement>(null)
   const measureRef = useRef<HTMLSpanElement>(null)
   const caretRef = useRef<number | null>(null)
   const [fontSize, setFontSize] = useState<number>()
@@ -59,26 +61,17 @@ export function CurrencyAmount({
 
   useLayoutEffect(() => {
     const container = containerRef.current
-    const symbol = symbolRef.current
     const measure = measureRef.current
-    if (!container || !symbol || !measure) return
+    if (!container || !measure) return
 
     function fitAmount() {
-      if (!container || !symbol || !measure) return
+      if (!container || !measure) return
       const maximum = Number.parseFloat(
         window.getComputedStyle(measure).fontSize
       )
-      const available =
-        container.clientWidth -
-        symbol.offsetWidth -
-        (role === "source" ? 14 : 4)
+      const available = Math.max(container.clientWidth - 2, 1)
       const width = measure.getBoundingClientRect().width
-      setFontSize(
-        Math.max(
-          12,
-          Math.min(maximum, (maximum * available) / Math.max(width, 1))
-        )
-      )
+      setFontSize(Math.min(maximum, (maximum * available) / Math.max(width, 1)))
     }
 
     const observer = new ResizeObserver(fitAmount)
@@ -91,7 +84,7 @@ export function CurrencyAmount({
   useEffect(() => {
     if (role === "source" && keepAmountFocus)
       inputRef.current?.focus({ preventScroll: true })
-  }, [role, keepAmountFocus])
+  }, [role, keepAmountFocus, amount])
 
   useLayoutEffect(() => {
     const input = inputRef.current
@@ -152,63 +145,93 @@ export function CurrencyAmount({
   return (
     <div
       ref={containerRef}
-      className="relative flex w-full min-w-0 items-center justify-end gap-1 overflow-hidden font-[var(--font-amount),monospace]"
+      className="relative w-full min-w-0 overflow-hidden"
+      style={{ fontFamily: "var(--font-amount), monospace" }}
     >
-      <span
-        ref={symbolRef}
+      <div
         className={cn(
-          "pt-6 text-[15px] leading-none sm:text-[clamp(15px,4.5vw,31px)] md:text-[clamp(26px,4.2vw,66px)]",
-          role === "target" && "text-muted-foreground"
+          "flex w-full min-w-0 items-baseline justify-end leading-none",
+          AMOUNT_TEXT_SIZE
         )}
+        style={{ fontSize, columnGap: "0.05em" }}
       >
-        {currency.symbol}
-      </span>
-
-      {role === "source" ? (
         <span
-          className="flex max-w-full min-w-0 items-baseline"
-          style={{ fontSize }}
+          className={cn(
+            "shrink-0 leading-none",
+            role === "target" && "text-muted-foreground"
+          )}
+          style={{ fontSize: "0.5em" }}
         >
-          <input
-            className="peer block max-w-full min-w-0 border-0 p-0 text-right text-[29px] leading-none tracking-tighter text-accent-foreground caret-transparent outline-none placeholder:text-accent-foreground/70 focus-visible:outline-none sm:text-[clamp(29px,9vw,62px)] md:text-[clamp(52px,8.4vw,132px)]"
-            ref={inputRef}
-            style={{
-              width: `${Math.max(displayAmount.length, 1)}ch`,
-              fontSize,
-            }}
-            inputMode="decimal"
-            value={displayAmount}
-            onChange={(event) =>
-              changeAmount(
-                event.target.value,
-                event.target.selectionStart ?? event.target.value.length
-              )
-            }
-            onKeyDown={onAmountKeyDown}
-            placeholder="0"
-            aria-label={`Amount in ${currency.code}`}
-          />
-          <span
-            className="amount-caret ml-1.5 w-1.5 shrink-0 self-center rounded-full bg-rose-500 opacity-0 peer-focus:opacity-100"
-            aria-hidden="true"
-          />
+          {currency.symbol}
         </span>
-      ) : (
-        <output
-          className="min-w-0 overflow-hidden pr-3 text-right text-[29px] leading-none tracking-tighter whitespace-nowrap sm:text-[clamp(29px,9vw,62px)] md:text-[clamp(52px,8.4vw,132px)]"
-          style={{ fontSize }}
-          aria-label={`Converted amount in ${currency.code}`}
-        >
-          {outputAmount}
-        </output>
-      )}
+
+        {role === "source" ? (
+          <span className="flex max-w-full min-w-0 items-baseline">
+            <input
+              className="peer block max-w-full min-w-0 border-0 p-0 text-right leading-none tracking-tighter text-accent-foreground caret-transparent outline-none placeholder:text-accent-foreground/70 focus-visible:outline-none"
+              ref={inputRef}
+              style={{ width: `${Math.max(displayAmount.length, 1)}ch` }}
+              inputMode="decimal"
+              value={displayAmount}
+              onChange={(event) =>
+                changeAmount(
+                  event.target.value,
+                  event.target.selectionStart ?? event.target.value.length
+                )
+              }
+              onKeyDown={onAmountKeyDown}
+              onBlur={() => {
+                requestAnimationFrame(() => {
+                  if (
+                    keepAmountFocus &&
+                    document.activeElement === document.body
+                  )
+                    inputRef.current?.focus({ preventScroll: true })
+                })
+              }}
+              placeholder="0"
+              aria-label={`Amount in ${currency.code}`}
+            />
+            <span
+              className="amount-caret shrink-0 self-center rounded-full bg-rose-500 opacity-0 peer-focus:opacity-100"
+              style={{ marginLeft: "0.07em", width: "0.05em" }}
+              aria-hidden="true"
+            />
+          </span>
+        ) : (
+          <output
+            className="min-w-0 overflow-hidden text-right tracking-tighter whitespace-nowrap"
+            style={{ paddingRight: "0.12em" }}
+            aria-label={`Converted amount in ${currency.code}`}
+          >
+            {outputAmount}
+          </output>
+        )}
+      </div>
 
       <span
         ref={measureRef}
-        className="pointer-events-none invisible absolute top-0 left-0 text-[29px] leading-none tracking-tighter whitespace-nowrap sm:text-[clamp(29px,9vw,62px)] md:text-[clamp(52px,8.4vw,132px)]"
+        className={cn(
+          "pointer-events-none invisible absolute top-0 left-0 inline-flex w-max items-baseline leading-none whitespace-nowrap",
+          AMOUNT_TEXT_SIZE
+        )}
+        style={{ columnGap: "0.05em" }}
         aria-hidden="true"
       >
-        {visibleAmount}
+        <span style={{ fontSize: "0.5em" }}>{currency.symbol}</span>
+        <span
+          className="tracking-tighter"
+          style={
+            role === "source"
+              ? { width: `${Math.max(displayAmount.length, 1)}ch` }
+              : { paddingRight: "0.12em" }
+          }
+        >
+          {visibleAmount}
+        </span>
+        {role === "source" ? (
+          <span style={{ marginLeft: "0.07em", width: "0.05em" }} />
+        ) : null}
       </span>
     </div>
   )

@@ -34,7 +34,7 @@ export function CurrencyPanel({
   return (
     <article
       className={cn(
-        "flex p-[11px_16px] px-2.5 sm:px-4 md:p-[clamp(28px,5vh,64px)_clamp(24px,6vw,100px)_clamp(24px,4vh,48px)]",
+        "flex min-w-0 overflow-hidden p-[11px_16px] px-3.5 sm:px-4 md:p-[clamp(28px,5vh,64px)_clamp(24px,6vw,100px)_clamp(24px,4vh,48px)]",
         role === "source"
           ? "bg-accent text-accent-foreground"
           : "bg-background text-foreground"
