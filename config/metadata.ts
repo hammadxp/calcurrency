@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
+import { PROJECT_DETAILS } from "@/data/PROJECT_DETAILS"
 
-const title = "calcurrency · clear conversion"
-const description =
-  "Convert currencies with clear reference rates and a simple calculator."
+const title = `${PROJECT_DETAILS.name} · clear conversion`
+const description = PROJECT_DETAILS.description
 
 export const siteMetadata: Metadata = {
   title,
@@ -10,7 +10,7 @@ export const siteMetadata: Metadata = {
   openGraph: {
     title,
     description,
-    siteName: "calcurrency",
+    siteName: PROJECT_DETAILS.name,
     type: "website",
   },
 }

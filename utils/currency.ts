@@ -79,11 +79,14 @@ export function formatRateDate(value: string) {
 }
 
 export function normalizeAmount(value: string) {
+  const negative = value.startsWith("-") ? "-" : ""
   const digits = value.replace(/[^\d.]/g, "")
   const dot = digits.indexOf(".")
   return dot === -1
-    ? digits
-    : digits.slice(0, dot + 1) + digits.slice(dot + 1).replaceAll(".", "")
+    ? negative + digits
+    : negative +
+        digits.slice(0, dot + 1) +
+        digits.slice(dot + 1).replaceAll(".", "")
 }
 
 type AmountLocale = {
@@ -118,10 +121,12 @@ export function formatEditableAmount(value: string, locale: string) {
   if (!value) return ""
   const { decimal, integerFormatter } = amountSeparators(locale)
   const [integer, fraction] = value.split(".")
-  const leadingZeros = integer.match(/^0+/)?.[0] ?? ""
-  const significant = integer.slice(leadingZeros.length)
+  const sign = integer.startsWith("-") ? "-" : ""
+  const unsigned = integer.slice(sign.length)
+  const leadingZeros = unsigned.match(/^0+/)?.[0] ?? ""
+  const significant = unsigned.slice(leadingZeros.length)
   const grouped = significant
-    ? leadingZeros + integerFormatter.format(BigInt(significant))
+    ? sign + leadingZeros + integerFormatter.format(BigInt(significant))
     : integer
   return fraction === undefined ? grouped : `${grouped}${decimal}${fraction}`
 }

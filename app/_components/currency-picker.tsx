@@ -2,16 +2,16 @@
 
 import { useDeferredValue, useId, useMemo, useRef, useState } from "react"
 import { Search, X } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { CurrencyOption } from "./currency-option"
 import { useModalFocus } from "@/hooks/use-modal-focus"
-import type { Currency, Slot } from "@/types/currency"
+import type { Currency } from "@/types/currency"
 
 type CurrencyPickerProps = {
-  slot: Slot | "rates"
+  slot: "add" | "replace" | "rates"
   selectedCode: string | null
   currencies: Currency[]
   onSelect: (code: string) => void
-  onClear?: () => void
   onClose: () => void
 }
 
@@ -24,7 +24,6 @@ export function CurrencyPicker({
   selectedCode,
   currencies,
   onSelect,
-  onClear,
   onClose,
 }: CurrencyPickerProps) {
   const [search, setSearch] = useState("")
@@ -68,24 +67,25 @@ export function CurrencyPicker({
           <div>
             <span className="mb-[7px] block text-[11px] font-bold tracking-[0.08em] text-slate-500 uppercase dark:text-neutral-300">
               select{" "}
-              {slot === "from"
-                ? "source"
-                : slot === "to"
-                  ? "target"
+              {slot === "add"
+                ? "new currency"
+                : slot === "replace"
+                  ? "replacement"
                   : "rate base"}
             </span>
             <h2 className="text-[25px] tracking-[-0.08em]" id={titleId}>
               Pick a currency
             </h2>
           </div>
-          <button
-            type="button"
-            className="grid size-9 place-items-center self-start rounded-md border border-slate-900/20 bg-white/50 text-slate-900 transition-colors hover:bg-slate-900 hover:text-stone-50 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 dark:border-white/20 dark:bg-white/10 dark:text-stone-50"
+          <Button
+            variant="outline"
+            size="icon"
+            className="self-start"
             onClick={onClose}
             aria-label="Close currency picker"
           >
             <X size={18} />
-          </button>
+          </Button>
         </div>
         <label className="search-field mx-3.5 my-3 flex items-center gap-2.5 rounded-[7px] border border-stone-200 bg-stone-100 px-3.5 py-3 md:mx-5 dark:border-neutral-600 dark:bg-neutral-900">
           <Search size={17} />
@@ -125,21 +125,12 @@ export function CurrencyPicker({
           />
           {filtered.length === 0 ? (
             <p className="px-6 py-4 text-[13px] text-slate-500 dark:text-neutral-300">
-              No currencies found.
+              {search
+                ? "No currencies found."
+                : "All available currencies are already in your list."}
             </p>
           ) : null}
         </div>
-        {onClear ? (
-          <div className="border-t border-stone-200 px-6 py-[13px] dark:border-neutral-700">
-            <button
-              type="button"
-              className="p-1.5 text-[13px] text-rose-600 underline focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 dark:text-rose-400"
-              onClick={onClear}
-            >
-              Clear this currency
-            </button>
-          </div>
-        ) : null}
       </div>
     </div>
   )

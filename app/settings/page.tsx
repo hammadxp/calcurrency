@@ -2,10 +2,11 @@ import type { Metadata } from "next"
 import { connection } from "next/server"
 
 import { ConverterApp } from "../_components/converter-app"
+import { PROJECT_DETAILS } from "@/data/PROJECT_DETAILS"
 
 export const metadata: Metadata = {
-  title: "Settings | calcurrency",
-  description: "Choose how calcurrency displays and remembers amounts.",
+  title: `Settings | ${PROJECT_DETAILS.name}`,
+  description: `Choose how ${PROJECT_DETAILS.name} displays and remembers amounts.`,
 }
 
 export default async function SettingsPage() {

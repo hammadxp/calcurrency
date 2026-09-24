@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "node tests/currency.test.mjs",
+    "test": "node --test --test-isolation=none tests/currency.test.mjs tests/calculator.test.mjs tests/selected-currencies.test.mjs",
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx}\"",

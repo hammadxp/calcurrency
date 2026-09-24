@@ -16,8 +16,7 @@ import {
   parseEditableAmount,
 } from "@/utils/currency"
 
-const AMOUNT_TEXT_SIZE =
-  "text-[29px] sm:text-[clamp(29px,9vw,62px)] md:text-[clamp(52px,8.4vw,132px)]"
+const AMOUNT_TEXT_SIZE = "text-3xl sm:text-4xl lg:text-5xl"
 
 const subscribeToLocale = () => () => undefined
 const getLocale = () => navigator.language || "en-US"
@@ -31,6 +30,8 @@ type CurrencyAmountProps = {
   settings: Settings
   keepAmountFocus?: boolean
   onChange?: (value: string) => void
+  onCalculatorKey?: (key: string) => void
+  awaitingNext?: boolean
 }
 
 export function CurrencyAmount({
@@ -41,6 +42,8 @@ export function CurrencyAmount({
   settings,
   keepAmountFocus = false,
   onChange,
+  onCalculatorKey,
+  awaitingNext = false,
 }: CurrencyAmountProps) {
   const locale = useSyncExternalStore(
     subscribeToLocale,
@@ -82,7 +85,11 @@ export function CurrencyAmount({
   }, [visibleAmount, currency.symbol, role])
 
   useEffect(() => {
-    if (role === "source" && keepAmountFocus)
+    if (
+      role === "source" &&
+      keepAmountFocus &&
+      window.matchMedia("(pointer: fine)").matches
+    )
       inputRef.current?.focus({ preventScroll: true })
   }, [role, keepAmountFocus, amount])
 
@@ -112,6 +119,30 @@ export function CurrencyAmount({
   }
 
   function onAmountKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    const calculatorKey =
+      event.key === "Enter"
+        ? "="
+        : event.key === "Escape"
+          ? "clear"
+          : event.key === "*" || event.key.toLowerCase() === "x"
+            ? "×"
+            : event.key === "/"
+              ? "÷"
+              : event.key
+    if (
+      ["+", "-", "×", "÷", "=", "%", "clear"].includes(calculatorKey) ||
+      (awaitingNext && /^\d$/.test(calculatorKey)) ||
+      (awaitingNext && [".", "Backspace", "Delete"].includes(calculatorKey))
+    ) {
+      event.preventDefault()
+      onCalculatorKey?.(
+        ["Backspace", "Delete"].includes(calculatorKey)
+          ? "delete"
+          : calculatorKey
+      )
+      return
+    }
+
     const input = event.currentTarget
     const { decimal } = amountSeparators(locale)
     const start = input.selectionStart ?? 0
@@ -158,7 +189,7 @@ export function CurrencyAmount({
         <span
           className={cn(
             "shrink-0 leading-none",
-            role === "target" && "text-muted-foreground"
+            role === "target" && "opacity-70"
           )}
           style={{ fontSize: "0.5em" }}
         >
@@ -168,7 +199,7 @@ export function CurrencyAmount({
         {role === "source" ? (
           <span className="flex max-w-full min-w-0 items-baseline">
             <input
-              className="peer block max-w-full min-w-0 border-0 p-0 text-right leading-none tracking-tighter text-accent-foreground caret-transparent outline-none placeholder:text-accent-foreground/70 focus-visible:outline-none"
+              className="peer block max-w-full min-w-0 border-0 bg-transparent p-0 text-right leading-none tracking-tighter text-inherit caret-transparent outline-none placeholder:text-current/70 focus-visible:outline-none"
               ref={inputRef}
               style={{ width: `${Math.max(displayAmount.length, 1)}ch` }}
               inputMode="decimal"
@@ -184,6 +215,7 @@ export function CurrencyAmount({
                 requestAnimationFrame(() => {
                   if (
                     keepAmountFocus &&
+                    window.matchMedia("(pointer: fine)").matches &&
                     document.activeElement === document.body
                   )
                     inputRef.current?.focus({ preventScroll: true })

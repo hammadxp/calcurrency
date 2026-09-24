@@ -1,11 +1,10 @@
 "use client"
 
-import { useEffect, type Dispatch, type SetStateAction } from "react"
-import { normalizeAmount } from "@/utils/currency"
+import { useEffect } from "react"
 
 type UseAmountKeyboardOptions = {
   enabled: boolean
-  setAmount: Dispatch<SetStateAction<string>>
+  onKey: (key: string) => void
 }
 
 function isTypingTarget(target: EventTarget | null) {
@@ -18,7 +17,7 @@ function isTypingTarget(target: EventTarget | null) {
 
 export function useAmountKeyboard({
   enabled,
-  setAmount,
+  onKey,
 }: UseAmountKeyboardOptions) {
   useEffect(() => {
     if (!enabled) {
@@ -36,21 +35,30 @@ export function useAmountKeyboard({
         return
       }
 
-      if (/^\d$/.test(event.key) || event.key === ".") {
-        setAmount((current) => normalizeAmount(current + event.key))
-      } else if (event.key === "Backspace") {
-        setAmount((current) => current.slice(0, -1))
-      } else if (event.key === "Escape") {
-        setAmount("")
-      } else {
+      const key =
+        event.key === "Backspace"
+          ? "delete"
+          : event.key === "Escape"
+            ? "clear"
+            : event.key === "Enter"
+              ? "="
+              : event.key === "*" || event.key.toLowerCase() === "x"
+                ? "×"
+                : event.key === "/"
+                  ? "÷"
+                  : event.key
+      if (
+        !/^\d$/.test(key) &&
+        ![".", "+", "-", "×", "÷", "=", "%", "delete", "clear"].includes(key)
+      )
         return
-      }
 
+      onKey(key)
       event.preventDefault()
     }
 
     window.addEventListener("keydown", onKeyDown)
 
     return () => window.removeEventListener("keydown", onKeyDown)
-  }, [enabled, setAmount])
+  }, [enabled, onKey])
 }

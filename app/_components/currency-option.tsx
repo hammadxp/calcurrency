@@ -1,4 +1,5 @@
 import { Check } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { FlagIcon } from "./flag-icon"
 import type { Currency } from "@/types/currency"
@@ -15,11 +16,11 @@ export function CurrencyOption({
   onSelect,
 }: CurrencyOptionProps) {
   return (
-    <button
-      type="button"
+    <Button
+      variant="ghost"
       className={cn(
-        "flex h-16 w-full items-center gap-3 overflow-hidden rounded-md border-0 border-b border-stone-200 bg-transparent px-2.5 text-left text-slate-900 transition-colors hover:bg-emerald-100 focus-visible:outline-[3px] focus-visible:outline-offset-3 focus-visible:outline-rose-500 dark:border-neutral-700 dark:text-stone-50 dark:hover:bg-emerald-950",
-        selected && "bg-emerald-100 dark:bg-emerald-950"
+        "h-16 w-full justify-start gap-3 rounded-md border-b border-border px-2.5 text-left",
+        selected && "bg-accent"
       )}
       onClick={() => onSelect(currency.code)}
       aria-pressed={selected}
@@ -32,6 +33,6 @@ export function CurrencyOption({
         </small>
       </span>
       {selected ? <Check size={17} /> : null}
-    </button>
+    </Button>
   )
 }

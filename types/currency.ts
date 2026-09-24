@@ -5,7 +5,9 @@ export type Currency = {
   flag?: string
 }
 
-export type Slot = "from" | "to"
+export type CurrencyColor =
+  "mint" | "paper" | "sky" | "peach" | "lilac" | "lemon"
+export type SelectedCurrency = { code: string; color: CurrencyColor }
 export type View = "convert" | "rates" | "settings"
 
 export type Settings = {

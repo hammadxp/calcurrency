@@ -3,6 +3,7 @@
 import { useId, useRef } from "react"
 import { Heart, X } from "lucide-react"
 import { useModalFocus } from "@/hooks/use-modal-focus"
+import { PROJECT_DETAILS } from "@/data/PROJECT_DETAILS"
 
 type DonateDialogProps = { onClose: () => void }
 
@@ -46,8 +47,8 @@ export function DonateDialog({ onClose }: DonateDialogProps) {
           Buy us a tiny coffee.
         </h2>
         <p className="my-[18px] mb-6 max-w-80 text-[13px] leading-[1.6] text-slate-600 dark:text-neutral-300">
-          calcurrency is a weekend tool with no sign-up and no noise. If it
-          saved you a tab, chip in for the next pot.
+          {PROJECT_DETAILS.name} is a weekend tool with no sign-up and no noise.
+          If it saved you a tab, chip in for the next pot.
         </p>
         <button
           type="button"

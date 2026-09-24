@@ -2,44 +2,27 @@
 
 import { useSyncExternalStore, type SetStateAction } from "react"
 import { DEFAULT_SETTINGS } from "@/config/constants"
-import type { Settings } from "@/types/currency"
+import type { SelectedCurrency, Settings } from "@/types/currency"
 import { normalizeAmount } from "@/utils/currency"
+import { DEFAULT_SELECTED, readSelected } from "@/utils/selected-currencies"
 
 const PAIR_KEY = "calcurrency-selected-currencies"
 const AMOUNT_KEY = "calcurrency-amount"
 const SETTINGS_KEY = "calcurrency-settings"
 
-type Pair = { from: string | null; to: string | null }
-type Preferences = { pair: Pair; amount: string; settings: Settings }
+type Preferences = {
+  selected: SelectedCurrency[]
+  amount: string
+  settings: Settings
+}
 
 const defaults: Preferences = {
-  pair: { from: "USD", to: "EUR" },
+  selected: DEFAULT_SELECTED,
   amount: "",
   settings: DEFAULT_SETTINGS,
 }
 const serverSnapshot = JSON.stringify(defaults)
 const listeners = new Set<() => void>()
-
-function readPair(value: string | null): Pair {
-  if (value) {
-    try {
-      const pair: unknown = JSON.parse(value)
-      if (pair && typeof pair === "object") {
-        const { from, to } = pair as Partial<Pair>
-        if (
-          (from === null ||
-            (typeof from === "string" && /^[A-Z]{3}$/.test(from))) &&
-          (to === null || (typeof to === "string" && /^[A-Z]{3}$/.test(to)))
-        ) {
-          return { from, to } as Pair
-        }
-      }
-    } catch {
-      /* Ignore old data. */
-    }
-  }
-  return defaults.pair
-}
 
 function readSettings(value: string | null): Settings {
   if (value) {
@@ -73,7 +56,7 @@ function readStored(): Preferences {
   try {
     const settings = readSettings(window.localStorage.getItem(SETTINGS_KEY))
     return {
-      pair: readPair(window.localStorage.getItem(PAIR_KEY)),
+      selected: readSelected(window.localStorage.getItem(PAIR_KEY)),
       amount: settings.remember
         ? normalizeAmount(window.localStorage.getItem(AMOUNT_KEY) ?? "")
         : "",
@@ -119,7 +102,7 @@ function update(transform: (value: Preferences) => Preferences) {
   current = transform(current)
   snapshot = JSON.stringify(current)
   try {
-    window.localStorage.setItem(PAIR_KEY, JSON.stringify(current.pair))
+    window.localStorage.setItem(PAIR_KEY, JSON.stringify(current.selected))
     window.localStorage.setItem(SETTINGS_KEY, JSON.stringify(current.settings))
     if (current.settings.remember)
       window.localStorage.setItem(AMOUNT_KEY, current.amount)
@@ -136,8 +119,8 @@ function resolve<T>(action: SetStateAction<T>, previous: T): T {
     : action
 }
 
-function setPair(action: SetStateAction<Pair>) {
-  update((value) => ({ ...value, pair: resolve(action, value.pair) }))
+function setSelected(action: SetStateAction<SelectedCurrency[]>) {
+  update((value) => ({ ...value, selected: resolve(action, value.selected) }))
 }
 
 function setAmount(action: SetStateAction<string>) {
@@ -152,5 +135,5 @@ export function useConverterPreferences() {
   const value = JSON.parse(
     useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
   ) as Preferences
-  return { ...value, setPair, setAmount, setSettings }
+  return { ...value, setSelected, setAmount, setSettings }
 }
