@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useState } from "react"
+import posthog from "posthog-js"
 import { AppHeader } from "./app-header"
 import { CURRENCY_COLORS } from "@/config/constants"
 import { cn } from "@/lib/utils"
@@ -47,6 +48,10 @@ export function ConverterApp({ view }: ConverterAppProps) {
   function selectCurrency(code: string) {
     if (picker?.kind === "rates") {
       setRatesBaseCode(code)
+      posthog.capture("currency_selection_changed", {
+        selection_context: "rates_base",
+        currency_code: code,
+      })
     } else if (picker?.kind === "add") {
       setSelected((current) =>
         current.some((item) => item.code === code)
@@ -61,6 +66,10 @@ export function ConverterApp({ view }: ConverterAppProps) {
               },
             ]
       )
+      posthog.capture("currency_selection_changed", {
+        selection_context: "add",
+        currency_code: code,
+      })
     } else if (picker?.kind === "replace") {
       const index = picker.index
       setSelected((current) =>
@@ -72,13 +81,23 @@ export function ConverterApp({ view }: ConverterAppProps) {
               position === index ? { ...item, code } : item
             )
       )
+      posthog.capture("currency_selection_changed", {
+        selection_context: "replace",
+        currency_code: code,
+      })
     }
 
     closePicker()
   }
 
   function moveCurrency(from: number, to: number) {
+    if (from === to) return
+
     setSelected((current) => moveSelectedCurrency(current, from, to))
+    posthog.capture("currency_reordered", {
+      from_position: from,
+      to_position: to,
+    })
   }
 
   function changeColor(index: number, color: CurrencyColor) {
@@ -87,10 +106,31 @@ export function ConverterApp({ view }: ConverterAppProps) {
         position === index ? { ...item, color } : item
       )
     )
+    posthog.capture("currency_color_changed", {
+      currency_code: selected[index]?.code,
+      color,
+    })
+  }
+
+  function removeCurrency(index: number) {
+    const currency = selected[index]
+    if (!currency || selected.length <= 1) return
+
+    setSelected((current) =>
+      current.filter((_, position) => position !== index)
+    )
+    posthog.capture("currency_removed", { currency_code: currency.code })
   }
 
   function toggleSetting(key: keyof Settings) {
+    const enabled = !settings[key]
     setSettings((current) => ({ ...current, [key]: !current[key] }))
+    posthog.capture("setting_toggled", { setting_key: key, enabled })
+  }
+
+  function requestRatesRefresh() {
+    refreshRates()
+    posthog.capture("exchange_rates_refresh_requested")
   }
 
   return (
@@ -105,13 +145,14 @@ export function ConverterApp({ view }: ConverterAppProps) {
         showDonate={settings.showDonate}
         status={status}
         refreshing={refreshing}
-        onRefresh={refreshRates}
+        onRefresh={requestRatesRefresh}
         mobileNavOpen={mobileNavOpen}
         onToggleNav={() => setMobileNavOpen((open) => !open)}
         onNavigate={() => setMobileNavOpen(false)}
         onDonate={() => {
           setDonateOpen(true)
           setMobileNavOpen(false)
+          posthog.capture("donate_dialog_opened")
         }}
       />
       {view === "convert" ? (
@@ -135,13 +176,7 @@ export function ConverterApp({ view }: ConverterAppProps) {
           onAdd={() => setPicker({ kind: "add" })}
           onColor={changeColor}
           onMakeBase={(index) => moveCurrency(index, 0)}
-          onRemove={(index) =>
-            setSelected((current) =>
-              current.length > 1
-                ? current.filter((_, position) => position !== index)
-                : current
-            )
-          }
+          onRemove={removeCurrency}
           onReorder={moveCurrency}
           onKey={pressKey}
         />
